@@ -1,0 +1,148 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = false; //Nao criara metodos estaticos
+}
+
+PARSER_BEGIN(Fun)
+package parser;
+import java.io.*;
+
+public class Fun {
+  final static String Version ="X++ Compiler - version 1.0 - 2018\n";
+  boolean menosShort = false;
+  
+  public static void main(String args []) throws ParseException {
+	String filename ="";
+    Fun parser;
+    int i;
+    boolean ms = false;
+    
+	System.out.println(Version);
+	// le os parametros passados para o compilador
+	for (int j = 0; j<args.length - 1; j++) {
+	  if (args[j].toLowerCase().equals("-short")) 
+	  ms = true;
+	  else {
+	    System.out.println("Usase is: java Fun [-short] inputfile");
+	    System.exit(0);
+	  }
+	}
+	
+	if(args[i].equals("-")) {
+	  // le a entrada - padrao
+	  System.out.println("Reading standart input...");
+	  parser = new Fun(System.in);
+	}
+	else {
+	  // le o arquivo
+	  filename = args[args.length-1];
+	  System.out.println("Reading from file " + filename + "...");
+	  try {
+	    parser = new Fun(new java.io.FileInputStream(filename));
+	  }
+	  catch (java.io.FileNotFoundException e) {
+	    System.out.println("File " + filename + " not found.");
+	    return;
+	  }
+	}
+
+	parser.menosShort = ms;
+	parser.program(); //chama o metodo que faz a analise
+
+	// verifica se houve erro lexico
+	if (parser.token_source.foundLexError() != 0) {
+	  System.out.println(parser.token_source.foundLexError() + " lexical errors found");
+	}
+	else {
+	  System.out.println("Program successfully analized");
+	} // main
+}
+  public static String im (int x) {
+    int k;
+    String s;
+    s = tokenImage[x];
+    k = s.lastIndexOf("\"");
+    try { s = s.substring(1,k); }
+    catch (StringIndexOfBoundsException e)
+    { }
+    return s;
+  }
+
+}
+
+PARSER_END(Fun)
+
+TOKEN_MGR_DECLS :
+{
+  int countLexError = 0;
+
+  public int foundLerError() {
+    return countLexError;
+  }
+}
+
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+| "\f"
+}
+
+TOKEN : /* Palavras reservadas */
+{
+  < BREAK: "break">
+  < CLASS: "class">
+  < CONSTRUCTOR: "constructor">
+  < ELSE: "else" >
+  < EXTENDS: "extends">
+  < FOR: "for" >
+  < IF: "if" >
+  < INT: "int" >
+  < NEW: "new" >
+  < PRINT: "print" >
+  < READ: "read" >
+  < RETURN: "return" >
+  < STRING: "string" >
+  < SUPER: "super" >
+  < FLOAT: "float" >
+}
+
+TOKEN : /* OPERATORS */
+{
+  < PLUS : "+" >
+| < MINUS : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < REM: "%" >
+| < ASSIGN: "=" >
+| < GT: ">" >
+| < LT: "<" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GE: ">=" >
+| < NEQ: "!=" >
+| 
+}
+
+TOKEN :
+{
+  < CONSTANT : (< DIGIT >)+ >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+void program() :
+{}
+{
+  (
+    <PLUS> { System.out.println("Reconheceu PLUS"); } 
+  | <MINUS> { System.out.println("Reconheceu MINUS"); } 
+  | <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); } 
+  | <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }  
+  )*
+}

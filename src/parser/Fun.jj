@@ -169,7 +169,35 @@ TOKEN: /* identificadore$ */
 |
   < #DIGIT:["0"-"9"] >
 }
-< 
+
+TOKEN:
+{
+  < WHILE: "while" > : WHILEMODE
+}
+
+SKIP:
+{
+  "/*": multilinecommnet
+}
+
+< multilinecomment > SKIP:
+{
+  "*/": DEFAULT
+|  <~[]>
+}
+
+SKIP:
+{
+  "//": singlelinecommnet
+}
+
+< singlelinecommnet > SKIP:
+{
+  < ["\n","\r"] >: DEFAULT
+|  <~[]>
+}
+
+
 void program() :
 {}
 {

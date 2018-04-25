@@ -70,7 +70,6 @@ public class Fun {
     { }
     return s;
   }
-
 }
 
 PARSER_END(Fun)
@@ -128,7 +127,6 @@ TOKEN : /* Operadore$ */
 | < LE: "<=" >
 | < GE: ">=" >
 | < NEQ: "!=" >
-| 
 }
 
 TOKEN : /* $imbolos especiais */
@@ -197,14 +195,54 @@ SKIP:
 |  <~[]>
 }
 
+< INVALID_LEXICAL:
+(~ ["a"-"z", "A"-"Z",
+	"0"-"9",
+	"\"",
+	"(",
+	")",
+	"[",
+	"]",
+	"{",
+	"}",
+	";",
+	",",
+	".",
+	"=",
+	">",
+	"<",
+	"!",
+	"+",
+	"-",
+	"*",
+	"/",
+	"%",
+	" ",
+	"\t",
+	"\n",
+	"\r",
+	"\f"
+])+>
+	{
+	  System.err.println("Line " + input_stream.getEndLine() + " - Invalid string found: " + image);
+	  countLexError++;
+	}
+|
+	< INVALID_CONST:
+	"\"" (~ ["\n","\r","\""])* ["\n","\r"] >
+	{
+	  System.err.println("Line " + input_stream.getEndLine() + " - String constant has a \\n: " + image);
+	  countLexError++;
+	}
 
+	
 void program() :
 {}
 {
   (
-    <PLUS> { System.out.println("Reconheceu PLUS"); } 
-  | <MINUS> { System.out.println("Reconheceu MINUS"); } 
-  | <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); } 
-  | <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }  
-  )*
+  <PLUS> { System.out.println("Reconheceu PLUS"); } 
+| <MINUS> { System.out.println("Reconheceu MINUS"); } 
+| <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); } 
+| <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }  
+ )*
 }

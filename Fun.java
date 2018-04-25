@@ -44,9 +44,24 @@ public class Fun implements FunConstants {
         parser.menosShort = ms;
         parser.program(); //chama o metodo que faz a analise
 
-
+        // verifica se houve erro lexico
+        if (parser.token_source.foundLexError() != 0) {
+          System.out.println(parser.token_source.foundLexError() + " lexical errors found");
+        }
+        else {
+          System.out.println("Program successfully analized");
+        } // main
 }
-
+  public static String im (int x) {
+    int k;
+    String s;
+    s = tokenImage[x];
+    k = s.lastIndexOf("\u005c"");
+    try { s = s.substring(1,k); }
+    catch (StringIndexOfBoundsException e)
+    { }
+    return s;
+  }
 
   final public void program() throws ParseException {
     label_1:
@@ -65,19 +80,19 @@ public class Fun implements FunConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case PLUS:
         jj_consume_token(PLUS);
-             System.out.println("Reconheceu PLUS");
+           System.out.println("Reconheceu PLUS");
         break;
       case MINUS:
         jj_consume_token(MINUS);
-              System.out.println("Reconheceu MINUS");
+            System.out.println("Reconheceu MINUS");
         break;
       case MULTIPLY:
         jj_consume_token(MULTIPLY);
-                 System.out.println("Reconheceu MULTIPLY");
+               System.out.println("Reconheceu MULTIPLY");
         break;
       case DIVIDE:
         jj_consume_token(DIVIDE);
-               System.out.println("Reconheceu DIVIDE");
+             System.out.println("Reconheceu DIVIDE");
         break;
       default:
         jj_la1[1] = jj_gen;
@@ -98,11 +113,21 @@ public class Fun implements FunConstants {
   private int jj_gen;
   final private int[] jj_la1 = new int[2];
   static private int[] jj_la1_0;
+  static private int[] jj_la1_1;
+  static private int[] jj_la1_2;
   static {
       jj_la1_init_0();
+      jj_la1_init_1();
+      jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1e0,0x1e0,};
+      jj_la1_0 = new int[] {0x7800000,0x7800000,};
+   }
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x0,0x0,};
+   }
+   private static void jj_la1_init_2() {
+      jj_la1_2 = new int[] {0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -219,7 +244,7 @@ public class Fun implements FunConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[11];
+    boolean[] la1tokens = new boolean[65];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -230,10 +255,16 @@ public class Fun implements FunConstants {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
             la1tokens[j] = true;
           }
+          if ((jj_la1_1[i] & (1<<j)) != 0) {
+            la1tokens[32+j] = true;
+          }
+          if ((jj_la1_2[i] & (1<<j)) != 0) {
+            la1tokens[64+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 65; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

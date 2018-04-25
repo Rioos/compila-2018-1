@@ -110,6 +110,8 @@ TOKEN : /* Palavra$ reservadas */
 | < STRING: "string" >
 | < SUPER: "super" >
 | < FLOAT: "float" >
+| < CHAR: "char" >
+| < BOOLEA: "boolean" >
 
 }
 
@@ -127,6 +129,11 @@ TOKEN : /* Operadore$ */
 | < LE: "<=" >
 | < GE: ">=" >
 | < NEQ: "!=" >
+| < NOT: "not" >
+| < AND: "and" >
+| < XOR: "xor" >
+| < OR: "or" >
+
 }
 
 TOKEN : /* $imbolos especiais */
@@ -153,9 +160,16 @@ TOKEN : /* Contante$ */
 |
 	< string_constant: //qlqr constante string 
 	"\""( ~["\"","\n","\r"])* "\"" >
-
+|
+	< float_constant:( // numeros de ponto flutuante
+	[-]+ ["0"-"9"] (["0"-"9"])* [.] (["0"-"9"])*
+	) >
+|	
+	< boolean_constant: "true" | "false" > // constante boolean
 |
 	< null_constant: "null" > // constante nula
+|
+	< char_constant: "\""( ~["\"","\n","\r"]) "\"" > // constante char
 
 }
 

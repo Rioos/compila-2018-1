@@ -43,7 +43,7 @@ public interface FunConstants {
   /** RegularExpression Id. */
   int CHAR = 21;
   /** RegularExpression Id. */
-  int BOOLEA = 22;
+  int BOOLEAN = 22;
   /** RegularExpression Id. */
   int PLUS = 23;
   /** RegularExpression Id. */
@@ -115,7 +115,9 @@ public interface FunConstants {
   /** RegularExpression Id. */
   int INVALID_LEXICAL = 63;
   /** RegularExpression Id. */
-  int INVALID_CONST = 64;
+  int INVALID_STRING_CONST = 64;
+  /** RegularExpression Id. */
+  int INVALID_CHAR_CONST = 65;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -190,7 +192,8 @@ public interface FunConstants {
     "<token of kind 61>",
     "<token of kind 62>",
     "<INVALID_LEXICAL>",
-    "<INVALID_CONST>",
+    "<INVALID_STRING_CONST>",
+    "<INVALID_CHAR_CONST>",
   };
 
 }

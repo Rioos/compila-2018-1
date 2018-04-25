@@ -22,8 +22,8 @@ public class Fun {
     
 	System.out.println(Version);
 	// le os parametros passados para o compilador
-	for (int j = 0; j<args.length - 1; j++) {
-	  if (args[j].toLowerCase().equals("-short")) 
+	for (i = 0; i<args.length - 1; i++) {
+	  if (args[i].toLowerCase().equals("-short")) 
 	  ms = true;
 	  else {
 	    System.out.println("Usase is: java Fun [-short] inputfile");
@@ -66,7 +66,7 @@ public class Fun {
     s = tokenImage[x];
     k = s.lastIndexOf("\"");
     try { s = s.substring(1,k); }
-    catch (StringIndexOfBoundsException e)
+    catch (StringIndexOutOfBoundsException e)
     { }
     return s;
   }
@@ -111,7 +111,7 @@ TOKEN : /* Palavra$ reservadas */
 | < SUPER: "super" >
 | < FLOAT: "float" >
 | < CHAR: "char" >
-| < BOOLEA: "boolean" >
+| < BOOLEAN: "boolean" >
 
 }
 
@@ -169,7 +169,7 @@ TOKEN : /* Contante$ */
 |
 	< null_constant: "null" > // constante nula
 |
-	< char_constant: "\""( ~["\"","\n","\r"]) "\"" > // constante char
+	< char_constant: "\'"( ~["\"","\n","\r"]) "\'" > // constante char
 
 }
 
@@ -211,6 +211,7 @@ SPECIAL_TOKEN:
 (~ ["a"-"z", "A"-"Z",
 	"0"-"9",
 	"\"",
+	"\'",
 	"(",
 	")",
 	"[",
@@ -240,10 +241,17 @@ SPECIAL_TOKEN:
 	  countLexError++;
 	}
 |
-	< INVALID_CONST:
+	< INVALID_STRING_CONST:
 	"\"" (~ ["\n","\r","\""])* ["\n","\r"] >
 	{
 	  System.err.println("Line " + input_stream.getEndLine() + " - String constant has a \\n: " + image);
+	  countLexError++;
+	}
+|
+	< INVALID_CHAR_CONST:
+	"\'" (~ ["\n","\r","\'"])* ["\n","\r"] >
+	{
+	  System.err.println("Line " + input_stream.getEndLine() + " - Char constant has a \\n: " + image);
 	  countLexError++;
 	}
 }
@@ -254,8 +262,39 @@ void program() :
 {
   (
   <PLUS> { System.out.println("Reconheceu PLUS"); } 
-| <MINUS> { System.out.println("Reconheceu MINUS"); } 
+| <MINUS> { System.out.println("Reconheceu MINUS"); }
+| <XOR> { System.out.println("Reconheceu XOR"); } 
 | <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); } 
-| <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }  
+| <STRING> { System.out.println("Reconheceu STRING"); }
+| <CLASS> { System.out.println("Reconheceu CLASS"); }
+| <CONSTRUCTOR> { System.out.println("Reconheceu CONSTRUCTOR"); }
+| <ELSE> { System.out.println("Reconheceu ELSE"); }
+| <EXTENDS> { System.out.println("Reconheceu EXTENDS"); }
+| <FOR> { System.out.println("Reconheceu FOR"); }
+| <IF> { System.out.println("Reconheceu IF"); }
+| <INT> { System.out.println("Reconheceu INT"); }
+| <NEW> { System.out.println("Reconheceu NEW"); }
+| <PRINT> { System.out.println("Reconheceu PRINT"); }
+| <READ> { System.out.println("Reconheceu RED"); }
+| <RETURN> { System.out.println("Reconheceu RETURN"); }
+| <SUPER> { System.out.println("Reconheceu SUPER"); }
+| <FLOAT> { System.out.println("Reconheceu FLOAT"); }
+| <CHAR> { System.out.println("Reconheceu CHAR"); }
+| <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
+| <LPAREN> { System.out.println("Reconheceu LPAREN"); }
+| <RPAREN> { System.out.println("Reconheceu RPAREN"); }
+| <LBRACE> { System.out.println("Reconheceu LBRACE"); }
+| <RBRACE> { System.out.println("Reconheceu RBRACE"); }
+| <LBRACKET> { System.out.println("Reconheceu LBRACKET"); }
+| <RBRACKET> { System.out.println("Reconheceu RBRACKET"); }
+| <SEMICOLON> { System.out.println("Reconheceu SEMICOLON"); }
+| <COMMA> { System.out.println("Reconheceu COMMA"); }
+| <DOT> { System.out.println("Reconheceu DOT"); }
+| <int_constant> { System.out.println("Reconheceu INT_CONSTANT"); }
+| <char_constant> { System.out.println("Reconheceu CHAR_CONSTANT"); }
+| <string_constant> { System.out.println("Reconheceu STRING_CONSTANT"); }
+| <null_constant> { System.out.println("Reconheceu NULL_CONSTANT"); }
+| <float_constant> { System.out.println("Reconheceu FLOAT_CONSTANT"); }
+| <boolean_constant> { System.out.println("Reconheceu BOOLEAN_CONSTANT"); }
  )*
 }

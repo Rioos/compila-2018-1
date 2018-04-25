@@ -1,5 +1,9 @@
-"ASDF"
-
-"\n"
-
-'\n'
+a
+<=
+x
+not
+y
+xor
+e
+or
+c

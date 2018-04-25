@@ -296,5 +296,18 @@ void program() :
 | <null_constant> { System.out.println("Reconheceu NULL_CONSTANT"); }
 | <float_constant> { System.out.println("Reconheceu FLOAT_CONSTANT"); }
 | <boolean_constant> { System.out.println("Reconheceu BOOLEAN_CONSTANT"); }
+| <IDENT> { System.out.println("Reconheceu IDENT"); }
+| <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }
+| <REM> { System.out.println("Reconheceu REM"); }
+| <ASSIGN> { System.out.println("Reconheceu ASSIGN"); }
+| <GT> { System.out.println("Reconheceu GT"); }
+| <LT> { System.out.println("Reconheceu LT"); }
+| <EQ> { System.out.println("Reconheceu EQ"); }
+| <LE> { System.out.println("Reconheceu LE"); }
+| <GE> { System.out.println("Reconheceu GE"); }
+| <NEQ> { System.out.println("Reconheceu NEQ"); }
+| <NOT> { System.out.println("Reconheceu NOT"); }
+| <AND> { System.out.println("Reconheceu AND"); }
+| <OR> { System.out.println("Reconheceu OR"); }
  )*
 }

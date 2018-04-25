@@ -87,7 +87,19 @@ public class Fun implements FunConstants {
       case PLUS:
       case MINUS:
       case MULTIPLY:
+      case DIVIDE:
+      case REM:
+      case ASSIGN:
+      case GT:
+      case LT:
+      case EQ:
+      case LE:
+      case GE:
+      case NEQ:
+      case NOT:
+      case AND:
       case XOR:
+      case OR:
       case LPAREN:
       case RPAREN:
       case LBRACE:
@@ -102,7 +114,8 @@ public class Fun implements FunConstants {
       case float_constant:
       case boolean_constant:
       case null_constant:
-      case char_constant:{
+      case char_constant:
+      case IDENT:{
         ;
         break;
         }
@@ -286,6 +299,71 @@ System.out.println("Reconheceu FLOAT_CONSTANT");
 System.out.println("Reconheceu BOOLEAN_CONSTANT");
         break;
         }
+      case IDENT:{
+        jj_consume_token(IDENT);
+System.out.println("Reconheceu IDENT");
+        break;
+        }
+      case DIVIDE:{
+        jj_consume_token(DIVIDE);
+System.out.println("Reconheceu DIVIDE");
+        break;
+        }
+      case REM:{
+        jj_consume_token(REM);
+System.out.println("Reconheceu REM");
+        break;
+        }
+      case ASSIGN:{
+        jj_consume_token(ASSIGN);
+System.out.println("Reconheceu ASSIGN");
+        break;
+        }
+      case GT:{
+        jj_consume_token(GT);
+System.out.println("Reconheceu GT");
+        break;
+        }
+      case LT:{
+        jj_consume_token(LT);
+System.out.println("Reconheceu LT");
+        break;
+        }
+      case EQ:{
+        jj_consume_token(EQ);
+System.out.println("Reconheceu EQ");
+        break;
+        }
+      case LE:{
+        jj_consume_token(LE);
+System.out.println("Reconheceu LE");
+        break;
+        }
+      case GE:{
+        jj_consume_token(GE);
+System.out.println("Reconheceu GE");
+        break;
+        }
+      case NEQ:{
+        jj_consume_token(NEQ);
+System.out.println("Reconheceu NEQ");
+        break;
+        }
+      case NOT:{
+        jj_consume_token(NOT);
+System.out.println("Reconheceu NOT");
+        break;
+        }
+      case AND:{
+        jj_consume_token(AND);
+System.out.println("Reconheceu AND");
+        break;
+        }
+      case OR:{
+        jj_consume_token(OR);
+System.out.println("Reconheceu OR");
+        break;
+        }
       default:
         jj_la1[1] = jj_gen;
         jj_consume_token(-1);
@@ -313,10 +391,10 @@ System.out.println("Reconheceu BOOLEAN_CONSTANT");
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3ffff80,0x3ffff80,};
+      jj_la1_0 = new int[] {0xffffff80,0xffffff80,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x3fffa0,0x3fffa0,};
+      jj_la1_1 = new int[] {0x7fffff,0x7fffff,};
    }
    private static void jj_la1_init_2() {
       jj_la1_2 = new int[] {0x0,0x0,};

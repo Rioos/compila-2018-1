@@ -99,13 +99,13 @@ public interface FunConstants {
   /** RegularExpression Id. */
   int string_constant = 49;
   /** RegularExpression Id. */
-  int float_constant = 50;
+  int char_constant = 50;
   /** RegularExpression Id. */
-  int boolean_constant = 51;
+  int float_constant = 51;
   /** RegularExpression Id. */
-  int null_constant = 52;
+  int boolean_constant = 52;
   /** RegularExpression Id. */
-  int char_constant = 53;
+  int null_constant = 53;
   /** RegularExpression Id. */
   int IDENT = 54;
   /** RegularExpression Id. */
@@ -115,9 +115,9 @@ public interface FunConstants {
   /** RegularExpression Id. */
   int INVALID_LEXICAL = 63;
   /** RegularExpression Id. */
-  int INVALID_STRING_CONST = 64;
+  int INVALID_CHAR_CONST = 64;
   /** RegularExpression Id. */
-  int INVALID_CHAR_CONST = 65;
+  int INVALID_STRING_CONST = 65;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -178,10 +178,10 @@ public interface FunConstants {
     "\".\"",
     "<int_constant>",
     "<string_constant>",
+    "<char_constant>",
     "<float_constant>",
     "<boolean_constant>",
     "\"null\"",
-    "<char_constant>",
     "<IDENT>",
     "<LETTER>",
     "<DIGIT>",
@@ -192,8 +192,8 @@ public interface FunConstants {
     "<token of kind 61>",
     "<token of kind 62>",
     "<INVALID_LEXICAL>",
-    "<INVALID_STRING_CONST>",
     "<INVALID_CHAR_CONST>",
+    "<INVALID_STRING_CONST>",
   };
 
 }

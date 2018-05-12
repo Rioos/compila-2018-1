@@ -111,10 +111,10 @@ public class Fun implements FunConstants {
       case DOT:
       case int_constant:
       case string_constant:
+      case char_constant:
       case float_constant:
       case boolean_constant:
       case null_constant:
-      case char_constant:
       case IDENT:{
         ;
         break;

@@ -166,20 +166,22 @@ TOKEN : /* Contante$ */
     )*
     "\"" >
 |
+	< char_constant:
+	"\'"
+    (
+      (~["\\", "\n", "\r", "\'" ])
+    | "\\" [ "n", "t", "r", "\\", "\"", "\'" ]
+    )
+    "\'" >
+|
 	< float_constant:( // numeros de ponto flutuante
-	(["-"])? ["0"-"9"] (["0"-"9"])* ["."] (["0"-"9"])*
+	(["-"])? (["0"-"9"])+ ["."] (["0"-"9"])+
 	) >
 |	
 	< boolean_constant: "true" | "false" > // constante boolean
 |
 	< null_constant: "null" > // constante nula
-|
-	< char_constant:"\'"
-    (
-      (~[ "\"", "\\", "\n", "\r" ])
-    | "\\" [ "n", "t", "r", "\\", "\"" ]
-    )
-    "\'" >
+
 
 }
 
@@ -251,6 +253,18 @@ SPECIAL_TOKEN:
 	  countLexError++;
 	}
 |
+	< INVALID_CHAR_CONST:
+	"\'"
+    (
+      (~[ "\'", "\\", "\n", "\r" ])
+    | "\\" [ "n", "t", "r", "\\", "\'" ]
+    )*
+     ["\n","\r"] >
+	{
+	  System.err.println("Line " + input_stream.getEndLine() + " - Char constant has a : " + image);
+	  countLexError++;
+	}
+|
 	< INVALID_STRING_CONST:
 	"\""
     (
@@ -259,21 +273,10 @@ SPECIAL_TOKEN:
     )*
      ["\n","\r"] >
 	{
-	  System.err.println("Line " + input_stream.getEndLine() + " - String constant has a \\n: " + image);
+	  System.err.println("Line " + input_stream.getEndLine() + " - String constant has a : " + image);
 	  countLexError++;
 	}
-|
-	< INVALID_CHAR_CONST:
-	"\'"
-    (
-      (~[ "\'", "\\", "\n", "\r" ])
-    | "\\" [ "n", "t", "r", "\\", "\'" ]
-    )
-     ["\n","\r"] >
-	{
-	  System.err.println("Line " + input_stream.getEndLine() + " - Char constant has a \\n: " + image);
-	  countLexError++;
-	}
+
 }
 
 	

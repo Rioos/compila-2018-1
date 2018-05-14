@@ -11,7 +11,7 @@ class expressoes() {
 			a = a*a;
 			b = b*10;
 			return 13;
-			// nesse exemplo, o analisador aceitará que o metodo retorne true ou 13
+			// nesse exemplo, o analisador sintatico aceita que o metodo retorne true ou 13, pois isso seria um erro semantico
 		}
 	}
 	

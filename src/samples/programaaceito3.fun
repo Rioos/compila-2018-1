@@ -7,7 +7,7 @@ class pEssOa {
 		if (3 != 4) {
 			String s = "a";
 			return s;
-			/* nesse exemplo, o analisador aceitará que um metodo do tipo int retorne um String */
+			/* nesse exemplo, o analisador sintatico aceita que um metodo do tipo int retorne um String, pois isso seria um erro semantico */
 		}
 	}
 	

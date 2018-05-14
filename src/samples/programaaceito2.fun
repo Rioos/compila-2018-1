@@ -12,9 +12,9 @@ class Carro extends Carro {
 		int a = 123 + 22;
 		int b = 10;
 		if (a>10 and b>10) {
-		return a;
+		return versao;
 		}
-		// nesse exemplo, o analisador aceitará que o metodo do tipo int nao retorne nada
+		// nesse exemplo, o analisador sintatico aceita que o metodo do tipo int retorne um float, pois isso seria um erro semantico
 	}
 }
 	

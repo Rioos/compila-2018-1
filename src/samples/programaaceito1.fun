@@ -23,7 +23,7 @@ class Uno extends Carro {
 		float f : 0;
 		for (int i =0; i <= 10; i++) {
 			f = i+1;
-// nesse exemplo, o compilador aceitar� atribuir um int ao float
+/*nesse exemplo, o analisador sintatico aceita atribuir um int ao float, pois isso seria um erro semantico*/
 		}
 		return f<1;
 	}

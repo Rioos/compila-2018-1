@@ -470,6 +470,15 @@ void methoddecl() :
 	< IDENT > methodbody()
 }
 
+void method() :
+{
+}
+{
+	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
+	(< LBRACKET > < RBRACKET >)*
+	< IDENT > methodbody()
+}
+
 void constructdecl() :
 {
 }
@@ -477,32 +486,16 @@ void constructdecl() :
   < CONSTRUCTOR > methodbody()
 }
 
-void Type():
-{
-}
-{
- (   < INT > | < BOOLEAN > | < CHAR > | < STRING > | < FLOAT > | < IDENT >
- )
-}
-
-
-void MethodDeclarationLookahead() :
-{}
-{
-  Type() <IDENT> "("
-}
-
 void classbody() :
 {
 }
-{	  	< LBRACE >
-		(LOOKAHEAD( < CLASS >) classlist())*
+{
+	< LBRACE >
+		[classlist()]
 		(LOOKAHEAD(3) vardecl() < SEMICOLON >)*
-	(
-		LOOKAHEAD(MethodDeclarationLookahead()) methoddecl() |
-		LOOKAHEAD( < CONSTRUCTOR >) constructdecl()
-	)*
-	< RBRACE >
+		(constructdecl())*
+		(methoddecl())*
+	< RBRACE >		  
 }
 
 void classdecl() :

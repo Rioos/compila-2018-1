@@ -477,16 +477,32 @@ void constructdecl() :
   < CONSTRUCTOR > methodbody()
 }
 
-void classbody() :
+void Type():
 {
 }
 {
-	< LBRACE >
-		[classlist()]
-		(LOOKAHEAD(3) vardecl() < SEMICOLON >)*
-		(constructdecl())*
-		(methoddecl())*
-	< RBRACE >		  
+ (   < INT > | < BOOLEAN > | < CHAR > | < STRING > | < FLOAT > | < IDENT >
+ )
+}
+
+
+void MethodDeclarationLookahead() :
+{}
+{
+  Type() <IDENT> "("
+}
+
+void classbody() :
+{
+}
+{	  	< LBRACE >
+	(
+		LOOKAHEAD( < CLASS >) classlist() |
+		LOOKAHEAD(3) vardecl() < SEMICOLON > |
+		LOOKAHEAD(MethodDeclarationLookahead()) methoddecl() |
+		LOOKAHEAD( < CONSTRUCTOR >) constructdecl()
+	)*
+	< RBRACE >
 }
 
 void classdecl() :

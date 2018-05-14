@@ -163,14 +163,24 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;CONSTRUCTOR&gt; <A HREF="#prod23">methodbody</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">classbody</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">Type</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LBRACE&gt; ( <A HREF="#prod27">classlist</A> )? ( <A HREF="#prod4">vardecl</A> &lt;SEMICOLON&gt; )* ( <A HREF="#prod25">constructdecl</A> )* ( <A HREF="#prod24">methoddecl</A> )* &lt;RBRACE&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;IDENT&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">classdecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">MethodDeclarationLookahead</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;CLASS&gt; &lt;IDENT&gt; ( &lt;EXTENDS&gt; &lt;IDENT&gt; )? <A HREF="#prod26">classbody</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod26">Type</A> &lt;IDENT&gt; "("</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">classbody</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LBRACE&gt; ( <A HREF="#prod29">classlist</A> | <A HREF="#prod4">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod24">methoddecl</A> | <A HREF="#prod25">constructdecl</A> )* &lt;RBRACE&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">classdecl</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;CLASS&gt; &lt;IDENT&gt; ( &lt;EXTENDS&gt; &lt;IDENT&gt; )? <A HREF="#prod28">classbody</A></TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">ifstat</A></TD>
@@ -188,9 +198,9 @@
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod19">statement</A> ( <A HREF="#prod22">statlist</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">classlist</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">classlist</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod28">classdecl</A> ( <A HREF="#prod27">classlist</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod30">classdecl</A> ( <A HREF="#prod29">classlist</A> )?</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">arglist</A></TD>
@@ -198,9 +208,9 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod3">expression</A> ( &lt;COMMA&gt; <A HREF="#prod3">expression</A> )* )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">program</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">program</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod28">classdecl</A> ( <A HREF="#prod27">classlist</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod30">classdecl</A> ( <A HREF="#prod29">classlist</A> )?</TD>
 </TR>
 </TABLE>
 </BODY>

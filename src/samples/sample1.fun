@@ -95,7 +95,7 @@ Abc
 /**/
 public 
 private
-byte
 short
+byte
 case
 switch

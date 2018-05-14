@@ -1080,8 +1080,26 @@ public class Fun implements FunConstants {
       jj_consume_token(LBRACE);
       label_15:
       while (true) {
+        if (jj_2_3(2147483647)) {
+          ;
+        } else {
+          break label_15;
+        }
+        classlist();
+      }
+      label_16:
+      while (true) {
+        if (jj_2_4(3)) {
+          ;
+        } else {
+          break label_16;
+        }
+        vardecl();
+        jj_consume_token(SEMICOLON);
+      }
+      label_17:
+      while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case CLASS:
         case CONSTRUCTOR:
         case INT:
         case STRING:
@@ -1094,14 +1112,9 @@ public class Fun implements FunConstants {
           }
         default:
           jj_la1[41] = jj_gen;
-          break label_15;
+          break label_17;
         }
-        if (jj_2_3(2147483647)) {
-          classlist();
-        } else if (jj_2_4(3)) {
-          vardecl();
-          jj_consume_token(SEMICOLON);
-        } else if (jj_2_5(2147483647)) {
+        if (jj_2_5(2147483647)) {
           methoddecl();
         } else if (jj_2_6(2147483647)) {
           constructdecl();
@@ -1277,7 +1290,7 @@ public class Fun implements FunConstants {
       case null_constant:
       case IDENT:{
         expression();
-        label_16:
+        label_18:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case COMMA:{
@@ -1286,7 +1299,7 @@ public class Fun implements FunConstants {
             }
           default:
             jj_la1[49] = jj_gen;
-            break label_16;
+            break label_18;
           }
           jj_consume_token(COMMA);
           expression();
@@ -1368,25 +1381,25 @@ public class Fun implements FunConstants {
     finally { jj_save(5, xla); }
   }
 
-  private boolean jj_3R_19()
+  private boolean jj_3R_21()
  {
     if (jj_scan_token(LBRACKET)) return true;
     return false;
   }
 
-  private boolean jj_3R_21()
+  private boolean jj_3R_23()
  {
     if (jj_scan_token(ASSIGN)) return true;
     return false;
   }
 
-  private boolean jj_3R_20()
+  private boolean jj_3R_22()
  {
     if (jj_scan_token(COMMA)) return true;
     return false;
   }
 
-  private boolean jj_3R_17()
+  private boolean jj_3R_19()
  {
     if (!jj_rescan) trace_call("vardecl(LOOKING AHEAD...)");
     Token xsp;
@@ -1410,27 +1423,27 @@ public class Fun implements FunConstants {
     if (jj_scan_token(IDENT)) { if (!jj_rescan) trace_return("vardecl(LOOKAHEAD FAILED)"); return true; }
     while (true) {
       xsp = jj_scanpos;
-      if (jj_3R_19()) { jj_scanpos = xsp; break; }
+      if (jj_3R_21()) { jj_scanpos = xsp; break; }
     }
     while (true) {
       xsp = jj_scanpos;
-      if (jj_3R_20()) { jj_scanpos = xsp; break; }
+      if (jj_3R_22()) { jj_scanpos = xsp; break; }
     }
     xsp = jj_scanpos;
-    if (jj_3R_21()) jj_scanpos = xsp;
+    if (jj_3R_23()) jj_scanpos = xsp;
     { if (!jj_rescan) trace_return("vardecl(LOOKAHEAD SUCCEEDED)"); return false; }
   }
 
   private boolean jj_3_2()
  {
-    if (jj_3R_17()) return true;
+    if (jj_3R_19()) return true;
     return false;
   }
 
-  private boolean jj_3R_18()
+  private boolean jj_3R_20()
  {
     if (!jj_rescan) trace_call("MethodDeclarationLookahead(LOOKING AHEAD...)");
-    if (jj_3R_22()) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
+    if (jj_3R_24()) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
     if (jj_scan_token(IDENT)) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
     if (jj_scan_token(LPAREN)) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
     { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD SUCCEEDED)"); return false; }
@@ -1443,7 +1456,7 @@ public class Fun implements FunConstants {
     return false;
   }
 
-  private boolean jj_3R_22()
+  private boolean jj_3R_24()
  {
     if (!jj_rescan) trace_call("Type(LOOKING AHEAD...)");
     Token xsp;
@@ -1475,7 +1488,7 @@ public class Fun implements FunConstants {
 
   private boolean jj_3_5()
  {
-    if (jj_3R_18()) return true;
+    if (jj_3R_20()) return true;
     return false;
   }
 
@@ -1487,7 +1500,7 @@ public class Fun implements FunConstants {
 
   private boolean jj_3_4()
  {
-    if (jj_3R_17()) return true;
+    if (jj_3R_19()) return true;
     if (jj_scan_token(SEMICOLON)) return true;
     return false;
   }
@@ -1513,7 +1526,7 @@ public class Fun implements FunConstants {
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x742000,0x0,0x1804000,0x10000000,0x0,0x742000,0x0,0x1804000,0x10000000,0x742000,0x742000,0x0,0x0,0x0,0x1804000,0x10000000,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0xb9840,0x742000,0x0,0x742000,0x742180,0x400,0x200,0x0,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x80,};
+      jj_la1_0 = new int[] {0x742000,0x0,0x1804000,0x10000000,0x0,0x742000,0x0,0x1804000,0x10000000,0x742000,0x742000,0x0,0x0,0x0,0x1804000,0x10000000,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0xb9840,0x742000,0x0,0x742000,0x742100,0x400,0x200,0x0,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x80,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x400000,0x800,0x7f0088,0x0,0x4000,0x400000,0x800,0x7f0088,0x0,0x400000,0x400000,0x800,0x4000,0x800,0x7f0088,0x0,0x7f0080,0x8,0x0,0x0,0x0,0x0,0x0,0x0,0x7,0x7,0x10,0x60,0x60,0x400000,0x1000,0x400000,0x8800,0x80,0x8800,0x7f0088,0x7f0088,0x402200,0x400000,0x800,0x400000,0x400000,0x0,0x0,0x400000,0x7f0088,0x400000,0x402200,0x0,0x4000,0x7f0088,0x0,};

@@ -496,9 +496,9 @@ void classbody() :
 {
 }
 {	  	< LBRACE >
+		(LOOKAHEAD( < CLASS >) classlist())*
+		(LOOKAHEAD(3) vardecl() < SEMICOLON >)*
 	(
-		LOOKAHEAD( < CLASS >) classlist() |
-		LOOKAHEAD(3) vardecl() < SEMICOLON > |
 		LOOKAHEAD(MethodDeclarationLookahead()) methoddecl() |
 		LOOKAHEAD( < CONSTRUCTOR >) constructdecl()
 	)*

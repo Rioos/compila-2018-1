@@ -3,14 +3,13 @@ class pEssOa {
 	String nome;
 	int cpf;
 	
-	public int metodo() {
+	int metodo() {
 		if (3 != 4) {
-			String s = "a";
+			String s 
+			s = "a";
 			return s;
-			/* nesse exemplo, o analisador aceitará que um metodo do tipo int retorne um String */
+			/* nesse exemplo, o analisador aceitarï¿½ que um metodo do tipo int retorne um String */
 		}
 	}
 	
 }
-	
-	

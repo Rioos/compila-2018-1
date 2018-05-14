@@ -1,21 +1,16 @@
 class Carro extends Carro {
-// nesse exemplo, o analisador aceitará uma classe extender ela mesma
-	char a = 'a';
-	float versao = 12.321;
-	String abc = "abc";
+// nesse exemplo, o analisador aceitarï¿½ uma classe extender ela mesma
+	char a = 'a';	
 	
-	constructor void Carro(String s) {
-		abc = s;
-	}
-	
-	int estacionar() {
-		int a = 123 + 22;
-		int b = 10;
-		if (a>10 and b>10) {
-		return versao;
+	int estacionar(int x = 2, int y = 3) {
+		int a,b = 2;
+		a  = "a" + "a";
+		b = 10;
+		if (a >= 33 and (b <= 321+4 or true)) or not(c <= 322*22/2 xor a > 34) {
+		return a;
 		}
-		// nesse exemplo, o analisador sintatico aceita que o metodo do tipo int retorne um float, pois isso seria um erro semantico
+		// nesse exemplo, o analisador aceitarï¿½ que o metodo do tipo int nao retorne nada
 	}
+
 }
-	
 	

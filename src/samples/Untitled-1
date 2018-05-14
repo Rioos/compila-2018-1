@@ -309,107 +309,7 @@ void vardecl() :
 	  
 }
 
-void factor():
-{
-}
-{
-  (
-    < int_constant > |
-    < string_constant > |
-    < char_constant > |
-    < null_constant > |
-    < boolean_constant > |
-    < float_constant > |
-    lvalue() |
-    < LPAREN > expression() < RPAREN >
-  )
-}
 
-void unaryexpr():
-{
-}
-{
-  [( < PLUS > | < MINUS >)] factor()
-}
-
-void term():
-{
-}
-{
-  unaryexpr() (( < MULTIPLY > | < DIVIDE > | < REM >) unaryexpr())*
-}
-
-void numexpr():
-{
-}
-{
-  term() (( < PLUS > | < MINUS >) term())*
-}
-
-void expression():
-{
-}
-{
-  numexpr() [( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ >) numexpr()]
-}
-
-void alocexpression() :
-{
-}
-{
-  < NEW > (
-	LOOKAHEAD(2) < IDENT > < LPAREN > arglist() < RPAREN > |
-	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
-	(< RBRACKET > expression() < LBRACKET >)+
-  )
-}
-
-void lvalue() :
-{
-}
-{
-  < IDENT > (
-    < LBRACKET > expression() < RBRACKET > |
-    < DOT > <IDENT > [< LPAREN > arglist() < RPAREN >]
-  )*
-}
-
-
-void atribstat() :
-{
-}
-{
-  lvalue() < ASSIGN > (alocexpression() | expression() )
-}
-
-
-void printstat() :
-{
-}
-{
-  < PRINT > expression()
-}
-
-void readstat() :
-{
-}
-{
-  < READ > lvalue()
-}
-
-void returnstat() :
-{
-}
-{
-  < RETURN > [expression()]
-}
-
-void superstat() :
-{
-}
-{
-  < SUPER > < LPAREN > arglist() < RPAREN >
-}
 
 void statement() :
 {
@@ -418,12 +318,12 @@ void statement() :
 	LOOKAHEAD(2)
 	vardecl() |
 	printstat() < SEMICOLON > |
-	atribstat() < SEMICOLON > |
+	abtribstat() < SEMICOLON > |
 	readstat() < SEMICOLON > |
 	returnstat() < SEMICOLON > |
 	superstat() < SEMICOLON > |
-	ifstat() |
-	forstat() |
+	ifstat() < SEMICOLON > |
+	forstat() < SEMICOLON > |
 	< LBRACE > statlist() < RBRACE > |
 	< BREAK > < SEMICOLON > |
 	< SEMICOLON >
@@ -469,9 +369,49 @@ void classdecl() :
 {
 }
 {
-  < CLASS > < IDENT > [< EXTENDS > < IDENT >] classbody()
+  < CLASS > < IDENT > [< EXTENDS > < INDENT >] classbody()
 }
 
+
+
+
+
+
+
+void atribstat() :
+{
+}
+{
+  lvalue() < ASSIGN > (alocexpression() | expression() )
+}
+
+void printstat() :
+{
+}
+{
+  < PRINT > expression()
+}
+
+void readstat() :
+{
+}
+{
+  < READ > lvalue()
+}
+
+void returnstat() :
+{
+}
+{
+  < RETURN > [expression()]
+}
+
+void superstat() :
+{
+}
+{
+  < SUPER > < LPAREN > arglist() < RPAREN >
+}
 
 void ifstat() :
 {
@@ -498,14 +438,68 @@ void statlist() :
   statement() [statlist()]
 }
 
-
-void classlist():
+void lvalue() :
 {
 }
 {
-  classdecl() [classlist()]
+  < IDENT > (
+    < LBRACKET > expression() < RBRACKET > |
+    < DOT > <IDENT > [< LPAREN > arglist() < RPAREN >]
+  )*
 }
 
+void alocexpression() :
+{
+}
+{
+  < NEW > (
+	LOOKAHEAD(2) < IDENT > < LPAREN > arglist() < RPAREN > |
+	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
+	(< RBRACKET > expression() < LBRACKET >)+
+  )
+}
+
+void expression():
+{
+}
+{
+  numexpr() [( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ >) numexp()]
+}
+
+void numexpr():
+{
+}
+{
+  term() (( < PLUS > | < MINUS >) term())*
+}
+
+void term():
+{
+}
+{
+  unaryexpr() (( < STAR > | < SLASH > | < REM >) unaryexpre())*
+}
+
+void unaryexpr():
+{
+}
+{
+  [( < PLUS > | < MINUS >)] factor()
+}
+
+void factor():
+{
+}
+{
+  (
+    < int_constant > |
+    < string_constant > |
+    < char_constant > |
+    < null_constant > |
+    lvalue() |
+    < LPAREN > expression() < RPAREN >
+  )
+}
 
 void arglist():
 {

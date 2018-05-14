@@ -1,4 +1,5 @@
 class expressoes() {
+/* nesse exemplo, o analisador NÃO aceitará os parentesis depois da declaracao da classe */
 	int a = 2;
 	int b = 3;
 	int c = 4;

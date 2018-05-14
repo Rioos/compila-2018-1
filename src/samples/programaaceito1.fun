@@ -7,6 +7,7 @@ class Uno extends Carro {
 	
 
 	void Carro() {
+	;
 	}
 
 	boolean acelerar (int a) {
@@ -19,10 +20,10 @@ class Uno extends Carro {
 	}
 	
 	boolean freiar() {
-		float f = 0;
+		float f : 0;
 		for (int i =0; i <= 10; i++) {
 			f = i+1;
-// nesse exemplo, o compilador aceitará atribuir um int ao float
+// nesse exemplo, o compilador aceitarï¿½ atribuir um int ao float
 		}
 		return f<1;
 	}

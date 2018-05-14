@@ -6,8 +6,7 @@ class Uno extends Carro {
 	String modelo;
 	
 
-	void Carro() {
-	}
+	int Carro() {}
 
 	boolean acelerar (int a) {
 		if (a>0) {
@@ -22,7 +21,7 @@ class Uno extends Carro {
 		int f = 0;
 		for (int i =0; i <= 10; i++) {
 			f = i+1 3;
-		// nesse exemplo, o analisador NÃO aceitará que exista um 3 depois de i+1
+		// nesse exemplo, o analisador Nï¿½O aceitarï¿½ que exista um 3 depois de i+1
 		}
 		return false;
 	}

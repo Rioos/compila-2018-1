@@ -289,11 +289,11 @@ void paramlist() :
 {
   [
 		(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
-		(< LBRACKET > < RBRACKET >)*
+		(< LBRACKET > < RBRACKET >)* [< ASSIGN > (alocexpression() | expression() )]
 		(
 		  < COMMA > (
 			(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
-			(< LBRACKET > < RBRACKET >)*
+			(< LBRACKET > < RBRACKET >)* [< ASSIGN > (alocexpression() | expression() )]
 		  )
 		)*
   ]
@@ -306,6 +306,7 @@ void vardecl() :
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
 	< IDENT > (< LBRACKET > < RBRACKET >)*
 	(< COMMA > < IDENT > (< LBRACKET > < RBRACKET >)*)*
+	[< ASSIGN > (alocexpression() | expression() )]
 	  
 }
 

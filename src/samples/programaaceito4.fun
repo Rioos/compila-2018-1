@@ -8,8 +8,8 @@ class expressoes {
 		a = 2;
 		b = 3;
 		c = 4;
-		if (a >= 33 and (b <= 321+4 or true)) or not(c <= 322*22/2 xor a > 34) {
-			a(a);
+		if ( a!= b or c%2 and c+b>a xor a+a==a and b>=c) {
+			d(int b = 3);
 			return true;
 		else {
 			a = a*a;

@@ -4,6 +4,7 @@
 options
 {
   static = false; //Nao criara metodos estaticos
+  DEBUG_LOOKAHEAD = true;
 }
 
 PARSER_BEGIN(Fun)
@@ -29,6 +30,7 @@ public class Fun {
 	    System.out.println("Usase is: java Fun [-short] inputfile");
 	    System.exit(0);
 	  }
+	  
 	}
 	
 	if(args[i].equals("-")) {
@@ -48,6 +50,7 @@ public class Fun {
 	    return;
 	  }
 	}
+	
 
 	parser.menosShort = ms;
 	parser.program(); //chama o metodo que faz a analise
@@ -279,58 +282,238 @@ SPECIAL_TOKEN:
 
 }
 
-	
+
+void paramlist() :
+{
+}
+{
+  [
+		(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
+		(< LBRACKET > < RBRACKET >)*
+		(
+		  < COMMA > (
+			(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
+			(< LBRACKET > < RBRACKET >)*
+		  )
+		)*
+  ]
+}
+
+void vardecl() :
+{
+}
+{
+	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
+	< IDENT > (< LBRACKET > < RBRACKET >)*
+	(< COMMA > < IDENT > (< LBRACKET > < RBRACKET >)*)*
+	  
+}
+
+
+
+void statement() :
+{
+}
+{
+	LOOKAHEAD(2)
+	vardecl() |
+	printstat() < SEMICOLON > |
+	abtribstat() < SEMICOLON > |
+	readstat() < SEMICOLON > |
+	returnstat() < SEMICOLON > |
+	superstat() < SEMICOLON > |
+	ifstat() < SEMICOLON > |
+	forstat() < SEMICOLON > |
+	< LBRACE > statlist() < RBRACE > |
+	< BREAK > < SEMICOLON > |
+	< SEMICOLON >
+}
+
+void methodbody() :
+{
+}
+{
+  < LPAREN > paramlist() < RPAREN > statement()
+}
+
+
+void methoddecl() :
+{
+}
+{
+	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
+	(< LBRACKET > < RBRACKET >)*
+	< IDENT > methodbody()
+}
+
+void constructdecl() :
+{
+}
+{
+  < CONSTRUCTOR > methodbody()
+}
+
+void classbody() :
+{
+}
+{
+	< LBRACE >
+		[classlist()]
+		(LOOKAHEAD(3) vardecl() < SEMICOLON >)*
+		(constructdecl())*
+		(methoddecl())*
+	< RBRACE >		  
+}
+
+void classdecl() :
+{
+}
+{
+  < CLASS > < IDENT > [< EXTENDS > < INDENT >] classbody()
+}
+
+
+
+
+
+
+
+void atribstat() :
+{
+}
+{
+  lvalue() < ASSIGN > (alocexpression() | expression() )
+}
+
+void printstat() :
+{
+}
+{
+  < PRINT > expression()
+}
+
+void readstat() :
+{
+}
+{
+  < READ > lvalue()
+}
+
+void returnstat() :
+{
+}
+{
+  < RETURN > [expression()]
+}
+
+void superstat() :
+{
+}
+{
+  < SUPER > < LPAREN > arglist() < RPAREN >
+}
+
+void ifstat() :
+{
+}
+{
+  < IF > < LPAREN > expression() < RPAREN > statement()
+  [LOOKAHEAD(1) < ELSE > statement()]
+}
+
+void forstat() :
+{
+}
+{
+  < FOR > < LPAREN > [atribstat()] < SEMICOLON >
+  					 [expression()] < SEMICOLON >
+  					 [atribstat()] < RPAREN >
+  					 statement()
+}
+
+void statlist() :
+{
+}
+{
+  statement() [statlist()]
+}
+
+void lvalue() :
+{
+}
+{
+  < IDENT > (
+    < LBRACKET > expression() < RBRACKET > |
+    < DOT > <IDENT > [< LPAREN > arglist() < RPAREN >]
+  )*
+}
+
+void alocexpression() :
+{
+}
+{
+  < NEW > (
+	LOOKAHEAD(2) < IDENT > < LPAREN > arglist() < RPAREN > |
+	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
+	(< RBRACKET > expression() < LBRACKET >)+
+  )
+}
+
+void expression():
+{
+}
+{
+  numexpr() [( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ >) numexp()]
+}
+
+void numexpr():
+{
+}
+{
+  term() (( < PLUS > | < MINUS >) term())*
+}
+
+void term():
+{
+}
+{
+  unaryexpr() (( < STAR > | < SLASH > | < REM >) unaryexpre())*
+}
+
+void unaryexpr():
+{
+}
+{
+  [( < PLUS > | < MINUS >)] factor()
+}
+
+void factor():
+{
+}
+{
+  (
+    < int_constant > |
+    < string_constant > |
+    < char_constant > |
+    < null_constant > |
+    lvalue() |
+    < LPAREN > expression() < RPAREN >
+  )}
+
+void arglist():
+{
+}
+{
+  [expression() (< COMMA > expression())*]
+}
+
 void program() :
 {}
 {
-  (
-  <PLUS> { System.out.println("Reconheceu PLUS"); } 
-| <MINUS> { System.out.println("Reconheceu MINUS"); }
-| <XOR> { System.out.println("Reconheceu XOR"); } 
-| <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); } 
-| <STRING> { System.out.println("Reconheceu STRING"); }
-| <CLASS> { System.out.println("Reconheceu CLASS"); }
-| <CONSTRUCTOR> { System.out.println("Reconheceu CONSTRUCTOR"); }
-| <ELSE> { System.out.println("Reconheceu ELSE"); }
-| <EXTENDS> { System.out.println("Reconheceu EXTENDS"); }
-| <FOR> { System.out.println("Reconheceu FOR"); }
-| <IF> { System.out.println("Reconheceu IF"); }
-| <INT> { System.out.println("Reconheceu INT"); }
-| <NEW> { System.out.println("Reconheceu NEW"); }
-| <PRINT> { System.out.println("Reconheceu PRINT"); }
-| <READ> { System.out.println("Reconheceu RED"); }
-| <RETURN> { System.out.println("Reconheceu RETURN"); }
-| <SUPER> { System.out.println("Reconheceu SUPER"); }
-| <FLOAT> { System.out.println("Reconheceu FLOAT"); }
-| <CHAR> { System.out.println("Reconheceu CHAR"); }
-| <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
-| <LPAREN> { System.out.println("Reconheceu LPAREN"); }
-| <RPAREN> { System.out.println("Reconheceu RPAREN"); }
-| <LBRACE> { System.out.println("Reconheceu LBRACE"); }
-| <RBRACE> { System.out.println("Reconheceu RBRACE"); }
-| <LBRACKET> { System.out.println("Reconheceu LBRACKET"); }
-| <RBRACKET> { System.out.println("Reconheceu RBRACKET"); }
-| <SEMICOLON> { System.out.println("Reconheceu SEMICOLON"); }
-| <COMMA> { System.out.println("Reconheceu COMMA"); }
-| <DOT> { System.out.println("Reconheceu DOT"); }
-| <int_constant> { System.out.println("Reconheceu INT_CONSTANT"); }
-| <char_constant> { System.out.println("Reconheceu CHAR_CONSTANT"); }
-| <string_constant> { System.out.println("Reconheceu STRING_CONSTANT"); }
-| <null_constant> { System.out.println("Reconheceu NULL_CONSTANT"); }
-| <float_constant> { System.out.println("Reconheceu FLOAT_CONSTANT"); }
-| <boolean_constant> { System.out.println("Reconheceu BOOLEAN_CONSTANT"); }
-| <IDENT> { System.out.println("Reconheceu IDENT"); }
-| <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }
-| <REM> { System.out.println("Reconheceu REM"); }
-| <ASSIGN> { System.out.println("Reconheceu ASSIGN"); }
-| <GT> { System.out.println("Reconheceu GT"); }
-| <LT> { System.out.println("Reconheceu LT"); }
-| <EQ> { System.out.println("Reconheceu EQ"); }
-| <LE> { System.out.println("Reconheceu LE"); }
-| <GE> { System.out.println("Reconheceu GE"); }
-| <NEQ> { System.out.println("Reconheceu NEQ"); }
-| <NOT> { System.out.println("Reconheceu NOT"); }
-| <AND> { System.out.println("Reconheceu AND"); }
-| <OR> { System.out.println("Reconheceu OR"); }
- )*
+	classdecl() [classlist()]
 }
+
+
+
+
+

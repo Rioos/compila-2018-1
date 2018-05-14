@@ -1015,34 +1015,24 @@ public class Fun implements FunConstants {
     }
   }
 
-  final public void constructdecl() throws ParseException {
-    trace_call("constructdecl");
-    try {
-      jj_consume_token(CONSTRUCTOR);
-      methodbody();
-    } finally {
-      trace_return("constructdecl");
-    }
-  }
-
-  final public void Type() throws ParseException {
-    trace_call("Type");
+  final public void method() throws ParseException {
+    trace_call("method");
     try {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case INT:{
         jj_consume_token(INT);
         break;
         }
-      case BOOLEAN:{
-        jj_consume_token(BOOLEAN);
+      case STRING:{
+        jj_consume_token(STRING);
         break;
         }
       case CHAR:{
         jj_consume_token(CHAR);
         break;
         }
-      case STRING:{
-        jj_consume_token(STRING);
+      case BOOLEAN:{
+        jj_consume_token(BOOLEAN);
         break;
         }
       case FLOAT:{
@@ -1058,19 +1048,34 @@ public class Fun implements FunConstants {
         jj_consume_token(-1);
         throw new ParseException();
       }
+      label_15:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case LBRACKET:{
+          ;
+          break;
+          }
+        default:
+          jj_la1[41] = jj_gen;
+          break label_15;
+        }
+        jj_consume_token(LBRACKET);
+        jj_consume_token(RBRACKET);
+      }
+      jj_consume_token(IDENT);
+      methodbody();
     } finally {
-      trace_return("Type");
+      trace_return("method");
     }
   }
 
-  final public void MethodDeclarationLookahead() throws ParseException {
-    trace_call("MethodDeclarationLookahead");
+  final public void constructdecl() throws ParseException {
+    trace_call("constructdecl");
     try {
-      Type();
-      jj_consume_token(IDENT);
-      jj_consume_token(LPAREN);
+      jj_consume_token(CONSTRUCTOR);
+      methodbody();
     } finally {
-      trace_return("MethodDeclarationLookahead");
+      trace_return("constructdecl");
     }
   }
 
@@ -1078,18 +1083,18 @@ public class Fun implements FunConstants {
     trace_call("classbody");
     try {
       jj_consume_token(LBRACE);
-      label_15:
-      while (true) {
-        if (jj_2_3(2147483647)) {
-          ;
-        } else {
-          break label_15;
-        }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case CLASS:{
         classlist();
+        break;
+        }
+      default:
+        jj_la1[42] = jj_gen;
+        ;
       }
       label_16:
       while (true) {
-        if (jj_2_4(3)) {
+        if (jj_2_3(3)) {
           ;
         } else {
           break label_16;
@@ -1100,7 +1105,19 @@ public class Fun implements FunConstants {
       label_17:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case CONSTRUCTOR:
+        case CONSTRUCTOR:{
+          ;
+          break;
+          }
+        default:
+          jj_la1[43] = jj_gen;
+          break label_17;
+        }
+        constructdecl();
+      }
+      label_18:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case INT:
         case STRING:
         case FLOAT:
@@ -1111,17 +1128,10 @@ public class Fun implements FunConstants {
           break;
           }
         default:
-          jj_la1[41] = jj_gen;
-          break label_17;
+          jj_la1[44] = jj_gen;
+          break label_18;
         }
-        if (jj_2_5(2147483647)) {
-          methoddecl();
-        } else if (jj_2_6(2147483647)) {
-          constructdecl();
-        } else {
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
+        methoddecl();
       }
       jj_consume_token(RBRACE);
     } finally {
@@ -1141,7 +1151,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[42] = jj_gen;
+        jj_la1[45] = jj_gen;
         ;
       }
       classbody();
@@ -1165,7 +1175,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[43] = jj_gen;
+        jj_la1[46] = jj_gen;
         ;
       }
     } finally {
@@ -1179,12 +1189,34 @@ public class Fun implements FunConstants {
       jj_consume_token(FOR);
       jj_consume_token(LPAREN);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case INT:
+      case STRING:
+      case FLOAT:
+      case CHAR:
+      case BOOLEAN:
       case IDENT:{
-        atribstat();
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case IDENT:{
+          atribstat();
+          break;
+          }
+        case INT:
+        case STRING:
+        case FLOAT:
+        case CHAR:
+        case BOOLEAN:{
+          vardecl();
+          break;
+          }
+        default:
+          jj_la1[47] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
         break;
         }
       default:
-        jj_la1[44] = jj_gen;
+        jj_la1[48] = jj_gen;
         ;
       }
       jj_consume_token(SEMICOLON);
@@ -1204,7 +1236,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[45] = jj_gen;
+        jj_la1[49] = jj_gen;
         ;
       }
       jj_consume_token(SEMICOLON);
@@ -1214,7 +1246,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[46] = jj_gen;
+        jj_la1[50] = jj_gen;
         ;
       }
       jj_consume_token(RPAREN);
@@ -1248,7 +1280,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[47] = jj_gen;
+        jj_la1[51] = jj_gen;
         ;
       }
     } finally {
@@ -1266,7 +1298,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[48] = jj_gen;
+        jj_la1[52] = jj_gen;
         ;
       }
     } finally {
@@ -1290,7 +1322,7 @@ public class Fun implements FunConstants {
       case null_constant:
       case IDENT:{
         expression();
-        label_18:
+        label_19:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case COMMA:{
@@ -1298,8 +1330,8 @@ public class Fun implements FunConstants {
             break;
             }
           default:
-            jj_la1[49] = jj_gen;
-            break label_18;
+            jj_la1[53] = jj_gen;
+            break label_19;
           }
           jj_consume_token(COMMA);
           expression();
@@ -1307,7 +1339,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[50] = jj_gen;
+        jj_la1[54] = jj_gen;
         ;
       }
     } finally {
@@ -1325,7 +1357,7 @@ public class Fun implements FunConstants {
         break;
         }
       default:
-        jj_la1[51] = jj_gen;
+        jj_la1[55] = jj_gen;
         ;
       }
     } finally {
@@ -1357,36 +1389,6 @@ public class Fun implements FunConstants {
     finally { jj_save(2, xla); }
   }
 
-  private boolean jj_2_4(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_4(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(3, xla); }
-  }
-
-  private boolean jj_2_5(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_5(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(4, xla); }
-  }
-
-  private boolean jj_2_6(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_6(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(5, xla); }
-  }
-
-  private boolean jj_3R_21()
- {
-    if (jj_scan_token(LBRACKET)) return true;
-    return false;
-  }
-
   private boolean jj_3R_23()
  {
     if (jj_scan_token(ASSIGN)) return true;
@@ -1399,7 +1401,7 @@ public class Fun implements FunConstants {
     return false;
   }
 
-  private boolean jj_3R_19()
+  private boolean jj_3R_20()
  {
     if (!jj_rescan) trace_call("vardecl(LOOKING AHEAD...)");
     Token xsp;
@@ -1436,72 +1438,27 @@ public class Fun implements FunConstants {
 
   private boolean jj_3_2()
  {
-    if (jj_3R_19()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_20()
- {
-    if (!jj_rescan) trace_call("MethodDeclarationLookahead(LOOKING AHEAD...)");
-    if (jj_3R_24()) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
-    if (jj_scan_token(IDENT)) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
-    if (jj_scan_token(LPAREN)) { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD FAILED)"); return true; }
-    { if (!jj_rescan) trace_return("MethodDeclarationLookahead(LOOKAHEAD SUCCEEDED)"); return false; }
-  }
-
-  private boolean jj_3_1()
- {
-    if (jj_scan_token(IDENT)) return true;
-    if (jj_scan_token(LPAREN)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_24()
- {
-    if (!jj_rescan) trace_call("Type(LOOKING AHEAD...)");
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(13)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(22)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(21)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(18)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(20)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(54)) { if (!jj_rescan) trace_return("Type(LOOKAHEAD FAILED)"); return true; }
-    }
-    }
-    }
-    }
-    }
-    { if (!jj_rescan) trace_return("Type(LOOKAHEAD SUCCEEDED)"); return false; }
-  }
-
-  private boolean jj_3_6()
- {
-    if (jj_scan_token(CONSTRUCTOR)) return true;
-    return false;
-  }
-
-  private boolean jj_3_5()
- {
     if (jj_3R_20()) return true;
     return false;
   }
 
   private boolean jj_3_3()
  {
-    if (jj_scan_token(CLASS)) return true;
+    if (jj_3R_20()) return true;
+    if (jj_scan_token(SEMICOLON)) return true;
     return false;
   }
 
-  private boolean jj_3_4()
+  private boolean jj_3R_21()
  {
-    if (jj_3R_19()) return true;
-    if (jj_scan_token(SEMICOLON)) return true;
+    if (jj_scan_token(LBRACKET)) return true;
+    return false;
+  }
+
+  private boolean jj_3_1()
+ {
+    if (jj_scan_token(IDENT)) return true;
+    if (jj_scan_token(LPAREN)) return true;
     return false;
   }
 
@@ -1516,7 +1473,7 @@ public class Fun implements FunConstants {
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[52];
+  final private int[] jj_la1 = new int[56];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -1526,15 +1483,15 @@ public class Fun implements FunConstants {
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x742000,0x0,0x1804000,0x10000000,0x0,0x742000,0x0,0x1804000,0x10000000,0x742000,0x742000,0x0,0x0,0x0,0x1804000,0x10000000,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0xb9840,0x742000,0x0,0x742000,0x742100,0x400,0x200,0x0,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x80,};
+      jj_la1_0 = new int[] {0x742000,0x0,0x1804000,0x10000000,0x0,0x742000,0x0,0x1804000,0x10000000,0x742000,0x742000,0x0,0x0,0x0,0x1804000,0x10000000,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0xb9840,0x742000,0x0,0x742000,0x0,0x80,0x100,0x742000,0x400,0x200,0x742000,0x742000,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x80,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x400000,0x800,0x7f0088,0x0,0x4000,0x400000,0x800,0x7f0088,0x0,0x400000,0x400000,0x800,0x4000,0x800,0x7f0088,0x0,0x7f0080,0x8,0x0,0x0,0x0,0x0,0x0,0x0,0x7,0x7,0x10,0x60,0x60,0x400000,0x1000,0x400000,0x8800,0x80,0x8800,0x7f0088,0x7f0088,0x402200,0x400000,0x800,0x400000,0x400000,0x0,0x0,0x400000,0x7f0088,0x400000,0x402200,0x0,0x4000,0x7f0088,0x0,};
+      jj_la1_1 = new int[] {0x400000,0x800,0x7f0088,0x0,0x4000,0x400000,0x800,0x7f0088,0x0,0x400000,0x400000,0x800,0x4000,0x800,0x7f0088,0x0,0x7f0080,0x8,0x0,0x0,0x0,0x0,0x0,0x0,0x7,0x7,0x10,0x60,0x60,0x400000,0x1000,0x400000,0x8800,0x80,0x8800,0x7f0088,0x7f0088,0x402200,0x400000,0x800,0x400000,0x800,0x0,0x0,0x400000,0x0,0x0,0x400000,0x400000,0x7f0088,0x400000,0x402200,0x0,0x4000,0x7f0088,0x0,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[6];
+  final private JJCalls[] jj_2_rtns = new JJCalls[3];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1549,7 +1506,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1564,7 +1521,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1575,7 +1532,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1586,7 +1543,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1596,7 +1553,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1606,7 +1563,7 @@ public class Fun implements FunConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 56; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1728,7 +1685,7 @@ public class Fun implements FunConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 56; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1813,7 +1770,7 @@ public class Fun implements FunConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 3; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1823,9 +1780,6 @@ public class Fun implements FunConstants {
             case 0: jj_3_1(); break;
             case 1: jj_3_2(); break;
             case 2: jj_3_3(); break;
-            case 3: jj_3_4(); break;
-            case 4: jj_3_5(); break;
-            case 5: jj_3_6(); break;
           }
         }
         p = p.next;

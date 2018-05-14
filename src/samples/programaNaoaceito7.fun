@@ -4,6 +4,7 @@ class Carro extends Carro {
 	String abc = "abc";
 	
 	constructor void Carro(String s) {
+	// nesse exemplo, o analisador NAO aceitara o tipo tipagem (void) para o construtor
 		abc = s;
 	}
 	

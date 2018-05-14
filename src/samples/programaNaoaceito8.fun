@@ -3,7 +3,7 @@ class pEssOa {
 	String nome;
 	int cpf;
 	return e;
-	// nesse exemplo, o analisador NÃO aceitará que uma linha com o comando "return e" 
+	// nesse exemplo, o analisador NÃO aceitará que a linha com o comando "return e" 
 	
 	public int metodo() {
 			String s = "a";

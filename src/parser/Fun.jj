@@ -329,7 +329,7 @@ void unaryexpr():
 {
 }
 {
-  [( < PLUS > | < MINUS >)] factor()
+  [< NOT >][( < PLUS > | < MINUS >)] factor()
 }
 
 void term():
@@ -346,12 +346,35 @@ void numexpr():
   term() (( < PLUS > | < MINUS >) term())*
 }
 
+
+void equalityExpression() :
+{}
+{
+  numexpr() ( ( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ > ) numexpr() )*
+}
+
+void condANDexpression():
+{
+}
+{
+  equalityExpression() ( (< AND >) equalityExpression() )*
+}
+
+void condORexpression():
+{
+}
+{
+  condANDexpression() ( (< OR > | < XOR >) condANDexpression() )*
+}
+
+
 void expression():
 {
 }
 {
-  numexpr() [( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ >) numexpr()]
+  condORexpression()
 }
+
 
 void alocexpression() :
 {

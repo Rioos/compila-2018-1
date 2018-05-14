@@ -8,9 +8,9 @@ class Carro extends Carro {
 	
 	int estacionar() {
 		int a,b;
-		a  = 123 + 22;
+		a  = "a" + "a";
 		b = 10;
-		if ( a>10 and b>10 ) {
+		if ( not a and b > c and r > e) {
 		return a;
 		}
 		// nesse exemplo, o analisador aceitar� que o metodo do tipo int nao retorne nada

@@ -9,7 +9,7 @@ class expressoes {
 		b = 3;
 		c = 4;
 		if ( a!= b or c%2 and c+b>a xor a+a==a and b>=c) {
-			soma(int a, int b, int c = 22)
+			d(int b = 3);
 			return true;
 		else {
 			a = a*a;

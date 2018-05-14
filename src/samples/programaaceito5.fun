@@ -6,7 +6,7 @@ class PaoDeBataaata {
 	
 	constructor () {
 		String s;
-		intodadas a;
+		int a;
 		float f;
 		f = a*s;
 		zero = 0/0;

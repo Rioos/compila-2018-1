@@ -9,29 +9,38 @@ options
 
 PARSER_BEGIN(Fun)
 package parser;
-import java.io.*;				
+import java.io.*;
+import recovery.*;			
 
 public class Fun {
   final static String Version ="X++ Compiler - version 1.0 - 2018\n";
-  boolean menosShort = false;
+  int contParseError = 0;
+  boolean debug_recovery;
   
   public static void main(String args []) throws ParseException {
+    boolean debug_as = false;
+    boolean debug_recovery = false;
+    
 	String filename ="";
     Fun parser;
     int i;
-    boolean ms = false;
     
 	System.out.println(Version);
 	// le os parametros passados para o compilador
-	for (i = 0; i<args.length - 1; i++) {
-	  if (args[i].toLowerCase().equals("-short")) 
-	  ms = true;
-	  else {
-	    System.out.println("Usase is: java Fun [-short] inputfile");
+	for (i = 0; i<args.length - 1; i++)
+	{
+	  if (args[i].equals("-debug_AS")) 
+	  	debug_as = true;
+	  else
+	  if (args[i].equals("-debug_recovery"))
+	    debug_recovery = true;
+	  else
+	  {
+	    System.out.println("Usage is: java Fun [-debug_AS] " + "[-debug_recovery] inputfile");
 	    System.exit(0);
 	  }
-	  
 	}
+	  
 	
 	if(args[i].equals("-")) {
 	  // le a entrada - padrao
@@ -39,7 +48,7 @@ public class Fun {
 	  parser = new Fun(System.in);
 	}
 	else {
-	  // le o arquivo
+	  // le do arquivo
 	  filename = args[args.length-1];
 	  System.out.println("Reading from file " + filename + "...");
 	  try {
@@ -52,8 +61,19 @@ public class Fun {
 	}
 	
 
-	parser.menosShort = ms;
-	parser.program(); //chama o metodo que faz a analise
+	parser.debug_recovery = debug_recovery;
+	if (!debug_as) parser.disable_tracing(); // desab verbose do AS
+	try {
+		parser.program(); //chama o metodo que faz a analise
+	}
+	catch (ParseEOFException e) {
+	  System.err.println(e.getMessage());
+	}
+	finally {
+	   System.out.println(parser.token_source.foundLexError() + "Lexical errors found");
+	   System.out.println(parser.contParseError + " Syntatic errors found");
+	 }
+}
 
 	// verifica se houve erro lexico
 	if (parser.token_source.foundLexError() != 0) {

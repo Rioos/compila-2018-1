@@ -81,10 +81,12 @@ public class Fun {
 	}
 	else {
 	  System.out.println("Program successfully analized");
-	} // main
-}
-  public static String im (int x) {
-    int k;
+	} 
+} // main
+
+static public String im (int x)
+{
+	int k;
     String s;
     s = tokenImage[x];
     k = s.lastIndexOf("\"");
@@ -92,8 +94,37 @@ public class Fun {
     catch (StringIndexOutOfBoundsException e)
     { }
     return s;
-  }
 }
+
+boolean eof; // variavel que indica se EOF foi alcancado
+// o metodo abaixo consome tokens ate alcancar um que pertenca ao conjunto de sincronizacao
+
+void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFException, ParseException
+{
+  	Token tok;
+	if (debug_recovery) {
+	  System.out.println();
+	  System.out.println("*** " + met + " ***");
+	  System.out.println("   Syncronizing Set: " + g);
+	}
+	if (g==null) throw e; // se o conjunto eh null, propaga a execao
+	tok = getToken(1) // pega token corrente
+	
+	while (!eof) {
+	  if (g.contains(tok.kind)) {
+	    if (debug_recovery) 
+	    	System.out.println("Found syncronizing token: " + im(tok.kind));
+	    break;
+	  }
+	  if(debug_recovery) { 
+	  	System.out.println("Ignoring token: " + im(tok.kind));
+	 }
+	  getNextToken();
+	  tok = getToken(1);
+	  if (tok.kind == EOF && ! g.contains(EOF) ) //fim da entrada
+	  	eof = true;
+	  }
+} // Fun
 
 PARSER_END(Fun)
 

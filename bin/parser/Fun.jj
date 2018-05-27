@@ -97,8 +97,8 @@ static public String im (int x)
 }
 
 boolean eof; // variavel que indica se EOF foi alcancado
-// o metodo abaixo consome tokens ate alcancar um que pertenca ao conjunto de sincronizacao
 
+// o metodo abaixo consome tokens ate alcancar um que pertenca ao conjunto de sincronizacao
 void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFException, ParseException
 {
   	Token tok;
@@ -116,15 +116,19 @@ void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFEx
 	    	System.out.println("Found syncronizing token: " + im(tok.kind));
 	    break;
 	  }
-	  if(debug_recovery) { 
+	  if(debug_recovery) 
 	  	System.out.println("Ignoring token: " + im(tok.kind));
-	 }
-	  getNextToken();
+	  getNextToken(); //pega prox token
 	  tok = getToken(1);
 	  if (tok.kind == EOF && ! g.contains(EOF) ) //fim da entrada
 	  	eof = true;
 	  }
-} // Fun
+	System.out.println(e.getMessage());
+	contParseError++; // incremento o numero de erros
+	if ( eof ) throw new ParseEOFException("EOF found prematurely.");
+}
+	
+} // Fun  
 
 PARSER_END(Fun)
 
@@ -605,11 +609,22 @@ void arglist():
   [expression() (< COMMA > expression())*]
 }
 
-void program() :
-{}
+void program() throws ParseEOFException :
 {
-	classdecl() [classlist()]
+  RecoverySet g = new RecoverySet(EOF);
+  {
+  }
+  try {
+    [ classlist(g)] < EOF >
+  }
+  catch (ParseException e) {
+    consumeUntil(g, e, "program");
+  }
 }
+
+//{
+//	classdecl() [classlist()]
+//}
 
 void S() {
   if (curToken.type == 'a') { 

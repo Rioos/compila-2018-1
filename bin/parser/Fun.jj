@@ -560,7 +560,67 @@ void program() :
 	classdecl() [classlist()]
 }
 
+void S() {
+  if (curToken.type == 'a') { 
+	analex();
+	A('c');
+	if (curToken.type == 'c') {
+	   analex();
+	   if (curToken.type == 'd') {
+	     analex();
+	   }
+	   else 
+	   SintaticError("Encontado curToken.type() + esperado: d");
+	}
+	else 
+	  SintaticError("Encontado + curToken.type() + esperado: c");
+  }
+  else
+  	if (curToken.type == 'b') { 
+		analex();
+		A('e');
+		if (curToken.type == 'e') {
+		  analex();
+		  if (curToken.type == 'f') {
+		    analex();
+		  }
+		    else
+		    	SintaticError("Encontado : " + curToken.type() + " esperado: f"); 
+		}
+		else
+			SintaticError("Encontado: " + curToken.type() + " esperado: e");
+	}
+	else
+		SintaticError("Encontado: " + curToken.type() + " esperado: b"); 
+} 
 
 
+void A(int k) {
+  try {
+    if (curToken.type == 'g') { 
+		analex();
+		if (curToken.type == 'h') { 
+			analex();
+		}
+		else { 
+			SintaticError("Encontrado " + curToken.type + " esperado: h");
+		} 
+ 	}
+ 	else { 
+  		SintaticError("Encontado " + curToken.type() + "esperado: g");
+  	}
+  }
+  catch (ASException e) { 
+		System.err.println(e.getMessage());
+		consume_until(k);
+	}
+}
 
-
+void SintaticError(String s) { 
+  throw new ASException(s);
+}
+ 
+void consume_until(int t) { 
+	while (curToken.type != t)
+		analex();
+}

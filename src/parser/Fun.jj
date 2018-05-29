@@ -338,11 +338,26 @@ SPECIAL_TOKEN:
 }
 
 
-void paramlist() :
+void paramlist(RecoverySet g) throws ParseEOFException :
 {
 }
 {
-  [
+  try {
+    [
+    	( < INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT > (< LBRACKET > < RBRACKET >)*
+    	( < COMMA > (< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
+    	( < LBRACKET > <RBRACKET > )*
+   		)*
+   	]
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "paramlist");
+  }
+}
+
+/* paramlist antigo:
+ [
 		(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >) < IDENT >
 		(< LBRACKET > < RBRACKET >)* [< ASSIGN > (alocexpression() | expression() )]
 		(
@@ -352,20 +367,26 @@ void paramlist() :
 		  )
 		)*
   ]
-}
 
-void vardecl() :
+  */
+
+void vardecl() throws ParseEOFException :
 {
 }
 {
+  try { 
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
 	< IDENT > (< LBRACKET > < RBRACKET >)*
 	(< COMMA > < IDENT > (< LBRACKET > < RBRACKET >)*)*
 	[< ASSIGN > (alocexpression() | expression() )]
-	  
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "vardecl");
+  }
 }
 
-void factor():
+void factor() throws ParseEOFException :
 {
 }
 {
@@ -376,26 +397,26 @@ void factor():
     < null_constant > |
     < boolean_constant > |
     < float_constant > |
-    lvalue() |
-    < LPAREN > expression() < RPAREN >
+    lvalue(null) |
+    < LPAREN > expression(null) < RPAREN >
   )
 }
 
-void unaryexpr():
+void unaryexpr() throws ParseEOFException :
 {
 }
 {
   [< NOT >][( < PLUS > | < MINUS >)] factor()
 }
 
-void term():
+void term() throws ParseEOFException :
 {
 }
 {
   unaryexpr() (( < MULTIPLY > | < DIVIDE > | < REM >) unaryexpr())*
 }
 
-void numexpr():
+void numexpr() throws ParseEOFException :
 {
 }
 {
@@ -424,95 +445,166 @@ void condORexpression():
 }
 
 
-void expression():
+void expression(RecoverySet g) throws ParseEOFException :
 {
 }
 {
-  condORexpression()
+  try {
+    numexpr() [( < LT > | < GT > | < LE > | < GE > | < EQ > | < NEQ >) numexpr()]
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "expression");
+  }
 }
 
 
-void alocexpression() :
+void alocexpression(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f1 = new RecoverySet(RPAREN);
+  RecoverySet f2 = new RecoverySet(RBRACKET);
 }
 {
   < NEW > (
-	LOOKAHEAD(2) < IDENT > < LPAREN > arglist() < RPAREN > |
+	LOOKAHEAD(2) < IDENT > < LPAREN > arglist(f1) < RPAREN > |
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
-	(< RBRACKET > expression() < LBRACKET >)+
+	(< LBRACKET > expression(f2) < RBRACKET >)+
   )
 }
 
-void lvalue() :
+void lvalue(RecoverySet g) throws ParseEOFException :
 {
 }
 {
+  try { 
   < IDENT > (
-    < LBRACKET > expression() < RBRACKET > |
-    < DOT > <IDENT > [< LPAREN > arglist() < RPAREN >]
+    < LBRACKET > expression(null) < RBRACKET > |
+    < DOT > <IDENT > [< LPAREN > arglist(null) < RPAREN >]
   )*
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "lvalue");
+  }
 }
 
 
-void atribstat() :
+void atribstat(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f1 = new RecoverySet(ASSIGN);
 }
 {
-  lvalue() < ASSIGN > (alocexpression() | expression() )
-}
-
-
-void printstat() :
-{
-}
-{
-  < PRINT > expression()
-}
-
-void readstat() :
-{
-}
-{
-  < READ > lvalue()
+  try {
+    lvalue(f1) < ASSIGN > (alocexpression(g) | expression(g))
+  }
+  catch (ParseException e)
+  {
+	consumeUntil(g, e, "atribstat");
+  }
 }
 
-void returnstat() :
+void printstat(RecoverySet g) throws ParseEOFException :
 {
 }
 {
-  < RETURN > [expression()]
+  try { 
+  	< PRINT > expression(g)
+ }
+  catch (ParseException e)
+  {
+	consumeUntil(g, e, "printstat");
+  }
 }
 
-void superstat() :
+void readstat(RecoverySet g) throws ParseEOFException :
 {
 }
 {
-  < SUPER > < LPAREN > arglist() < RPAREN >
+  try {
+  < READ > lvalue(g)
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "readstat"(;
+  }
 }
 
-void statement() :
+void returnstat(RecoverySet g) throws ParseEOFException :
 {
 }
 {
+  try {
+  < RETURN > [expression(g)]
+  }
+  catch(ParseException e)
+  {
+    consumeUntil(g, e, "returnstat"(;
+  }
+    
+}
+
+void superstat(RecoverySet g) throws ParseEOFException :
+{
+  RecoverySet f = new RecoverySet(RPAREN);
+}
+{
+  try { 
+  	< SUPER > < LPAREN > arglist(f) < RPAREN >
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "superstat");
+  }
+}
+
+void statement(RecoverySet g) throws ParseEOFException :
+{
+  RecoverySet f1 = new RecoverySet(SEMICOLON);
+  RecoverySet f2 = new RecoverySet(RBRACE);
+}
+{
+  try {
 	LOOKAHEAD(2)
-	vardecl() |
-	printstat() < SEMICOLON > |
-	atribstat() < SEMICOLON > |
-	readstat() < SEMICOLON > |
-	returnstat() < SEMICOLON > |
-	superstat() < SEMICOLON > |
-	ifstat() |
-	forstat() |
-	< LBRACE > statlist() < RBRACE > |
-	< BREAK > < SEMICOLON > |
+	vardecl(f1) < SEMICOLON >
+|
+	atribstat(f1) < SEMICOLON >
+|
+	printstat(f1) < SEMICOLON >
+|
+	readstat(f1) < SEMICOLON >
+|
+	returnstat(f1) < SEMICOLON >
+|
+	superstat(f1) < SEMICOLON >
+|
+	ifstat(g)
+|
+	forstat(g)
+|
+	< LBRACE > statlist(f2) < RBRACE >
+|
+	< BREAK > < SEMICOLON >
+|
 	< SEMICOLON >
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "statement");
+  }
 }
 
-void methodbody() :
+void methodbody(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f = new RecoverySet(RPAREN);
 }
 {
-  < LPAREN > paramlist() < RPAREN > statement()
+  try {
+  	< LPAREN > paramlist(f) < RPAREN > statement(g)
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "methodbody");
+  }
 }
 
 
@@ -583,29 +675,46 @@ catch (ParseException e)
 }
 
 
-void ifstat() :
+void ifstat(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f1 = new RecoverySet(RPAREN),
+  f2 = new RecoverySet(ELSE).union(g);
 }
 {
-  < IF > < LPAREN > expression() < RPAREN > statement()
-  [LOOKAHEAD(1) < ELSE > statement()]
-}
-
-void forstat() :
-{
-}
-{
-  < FOR > < LPAREN > [(atribstat() | vardecl())] < SEMICOLON >
-  					 [expression()] < SEMICOLON >
-  					 [atribstat()] < RPAREN >
-  					 statement()
+  try { 
+  < IF > < LPAREN > expression(f1) < RPAREN > statement(f2)
+  [LOOKAHEAD(1) < ELSE > statement(g)]
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "ifstat");
+  }
 }
 
-void statlist() :
+void forstat(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f1 = new RecoverySet(SEMICOLON),
+  f2 = new RecoverySet(RPAREN);
 }
 {
-  statement() [statlist()]
+  try { 
+  < FOR > < LPAREN > [(atribstat(f1) | vardecl(f1))] < SEMICOLON >
+  					 [expression(f1)] < SEMICOLON >
+  					 [atribstat(f2)] < RPAREN >
+  					 statement(g)
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "forstat");
+  }
+}
+
+void statlist (RecoverySet g) throws ParseEOFException :
+{
+  RecoverySet f = First.statlist.union(g);
+}
+{
+  statement(f) [statlist(g)]
 }
 
 
@@ -618,11 +727,12 @@ void classlist(RecoverySet g) throws ParseEOFException :
 }
 
 
-void arglist():
+void arglist() throws ParseEOFException :
 {
+  RecoverySet g = new RecoverySet(COMMA).union(g);
 }
 {
-  [expression() (< COMMA > expression())*]
+  [expression(f) (< COMMA > expression(f))*]
 }
 
 void program() throws ParseEOFException :

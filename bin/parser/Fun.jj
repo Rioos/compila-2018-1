@@ -74,7 +74,6 @@ public class Fun {
 	   System.out.println(parser.token_source.foundLexError() + "Lexical errors found");
 	   System.out.println(parser.contParseError + " Syntatic errors found");
 	 }
-}
 
 	// verifica se houve erro lexico
 	if (parser.token_source.foundLexError() != 0) {
@@ -109,7 +108,7 @@ void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFEx
 	  System.out.println("   Syncronizing Set: " + g);
 	}
 	if (g==null) throw e; // se o conjunto eh null, propaga a execao
-	tok = getToken(1) // pega token corrente
+	tok = getToken(1); // pega token corrente
 	
 	while (!eof) {
 	  if (g.contains(tok.kind)) {
@@ -526,7 +525,7 @@ void readstat(RecoverySet g) throws ParseEOFException :
   }
   catch (ParseException e)
   {
-    consumeUntil(g, e, "readstat"(;
+    consumeUntil(g, e, "readstat");
   }
 }
 
@@ -539,7 +538,7 @@ void returnstat(RecoverySet g) throws ParseEOFException :
   }
   catch(ParseException e)
   {
-    consumeUntil(g, e, "returnstat"(;
+    consumeUntil(g, e, "returnstat");
   }
     
 }
@@ -653,7 +652,7 @@ void classbody(RecoverySet g) throws ParseEOFException :
 		[classlist(f5)]
 		(LOOKAHEAD(3) vardecl(f2) < SEMICOLON >)*
 		(constructdecl(f4))*
-		methoddecl(f3))*
+		(methoddecl(f3))*
 	< RBRACE >
   }
   catch (ParseException e)
@@ -738,25 +737,34 @@ void arglist() throws ParseEOFException :
 
 void program() throws ParseEOFException :
 {
-  RecoverySet g = new RecoverySet(EOF);
-  {
-  }
-  try {
-    [ classlist(g)] < EOF >
-  }
-  catch (ParseException e) {
-    consumeUntil(g, e, "program");
-  }
+RecoverySet g = new RecoverySet(EOF);
+}
+{
+ try {
+		[ classlist(g) ] < EOF >
+	}
+catch (ParseException e) {
+	consumeUntil(g, e, "program");
+} 
 }
 
-void SintaticError(String s) { 
-  throw new ASException(s);
-}
- 
-void consume_until(int t) { 
-	while (curToken.type != t)
-		analex();
-}
+// \/ Esses dois abaixo estão dando problema, não consegui achar no livro da onde foram tirados, rever \/
+//void SintaticError(String s) :
+//{
+//  throw new ASException(s);
+//}
+//{
+//}
+// 
+//void consume_until(int t) :
+//{
+//	while (curToken.type != t)
+//		analex();
+//}
+//{
+//}
+
+// \/ Daqui pra baixo o João falou que copiou errado do livro \/
 
 //void S() {
 //  if (curToken.type == 'a') { 

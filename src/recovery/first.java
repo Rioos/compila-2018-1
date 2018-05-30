@@ -14,11 +14,17 @@ public class first {
 	
 	static { 
 		methoddecl.add(new Integer(FunConstants.INT)); 
-		methoddecl.add(new Integer(FunConstants.STRING)); 
+		methoddecl.add(new Integer(FunConstants.STRING));
+		methoddecl.add(new Integer(FunConstants.CHAR)); 
+		methoddecl.add(new Integer(FunConstants.BOOLEAN)); 
+		methoddecl.add(new Integer(FunConstants.FLOAT)); 
 		methoddecl.add(new Integer(FunConstants.IDENT)); 
 		
 		vardecl.add(new Integer(FunConstants.INT)); 
 		vardecl.add(new Integer(FunConstants.STRING)); 
+		vardecl.add(new Integer(FunConstants.CHAR)); 
+		vardecl.add(new Integer(FunConstants.BOOLEAN)); 
+		vardecl.add(new Integer(FunConstants.FLOAT)); 
 		vardecl.add(new Integer(FunConstants.IDENT)); 
 	
 		classlist.add(new Integer(FunConstants.CLASS)); 

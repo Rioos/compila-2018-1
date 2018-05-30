@@ -24,6 +24,7 @@ public class Fun {
 	String filename ="";
     Fun parser;
     int i;
+    boolean ms = false;
     
 	System.out.println(Version);
 	// le os parametros passados para o compilador
@@ -378,7 +379,7 @@ void vardecl() throws ParseEOFException :
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
 	< IDENT > (< LBRACKET > < RBRACKET >)*
 	(< COMMA > < IDENT > (< LBRACKET > < RBRACKET >)*)*
-	[< ASSIGN > (alocexpression() | expression() )]
+	// [< ASSIGN > (alocexpression() | expression() )]
   }
   catch (ParseException e)
   {
@@ -667,11 +668,11 @@ void classdecl(RecoverySet g) throws ParseEOFException :
 {
   try { 
   < CLASS > < IDENT > [< EXTENDS > < IDENT >] classbody(g)
-}
-catch (ParseException e)
-{
+  }
+  catch (ParseException e)
+  {
   consumeUntil(g, e, "classdecl");
-}
+  }
 }
 
 

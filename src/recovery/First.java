@@ -2,7 +2,7 @@ package recovery;
 import parser.*;
 import java.util.*;
 
-public class first {
+public class First {
 	
 	//implementa os conjuntos first p/ alguns n.terminais
 		static public final RecoverySet methoddecl = new RecoverySet(); 

@@ -370,7 +370,7 @@ void paramlist(RecoverySet g) throws ParseEOFException :
 
   */
 
-void vardecl() throws ParseEOFException :
+void vardecl(RecoverySet g) throws ParseEOFException :
 {
 }
 {
@@ -608,27 +608,28 @@ void methodbody(RecoverySet g) throws ParseEOFException :
 }
 
 
-void methoddecl() :
+void methoddecl(RecoverySet g) :
 {
 }
 {
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
 	(< LBRACKET > < RBRACKET >)*
-	< IDENT > methodbody()
+	< IDENT > methodbody(g)
 }
 
-void constructdecl() :
+void constructdecl(RecoverySet g) :
 {
 }
 {
-  < CONSTRUCTOR > methodbody()
+  < CONSTRUCTOR > methodbody(g)
 }
 
 void Type():
 {
 }
 {
- (   < INT > | < BOOLEAN > | < CHAR > | < STRING > | < FLOAT > | < IDENT >
+ (
+   < INT > | < BOOLEAN > | < CHAR > | < STRING > | < FLOAT > | < IDENT >
  )
 }
 
@@ -648,7 +649,8 @@ void classbody(RecoverySet g) throws ParseEOFException :
   f5 = First.vardecl.union(f4);
 }
 {
-  try { 	< LBRACE >
+  try { 
+	< LBRACE >
 		[classlist(f5)]
 		(LOOKAHEAD(3) vardecl(f2) < SEMICOLON >)*
 		(constructdecl(f4))*
@@ -727,9 +729,9 @@ void classlist(RecoverySet g) throws ParseEOFException :
 }
 
 
-void arglist() throws ParseEOFException :
+void arglist(RecoverySet g) throws ParseEOFException :
 {
-  RecoverySet g = new RecoverySet(COMMA).union(g);
+  RecoverySet f = new RecoverySet(COMMA).union(g);
 }
 {
   [expression(f) (< COMMA > expression(f))*]
@@ -747,77 +749,3 @@ catch (ParseException e) {
 	consumeUntil(g, e, "program");
 } 
 }
-
-// \/ Esses dois abaixo estão dando problema, não consegui achar no livro da onde foram tirados, rever \/
-//void SintaticError(String s) :
-//{
-//  throw new ASException(s);
-//}
-//{
-//}
-// 
-//void consume_until(int t) :
-//{
-//	while (curToken.type != t)
-//		analex();
-//}
-//{
-//}
-
-// \/ Daqui pra baixo o João falou que copiou errado do livro \/
-
-//void S() {
-//  if (curToken.type == 'a') { 
-//	analex();
-//	A('c');
-//	if (curToken.type == 'c') {
-//	   analex();
-//	   if (curToken.type == 'd') {
-//	     analex();
-//	   }
-//	   else 
-//	   SintaticError("Encontado curToken.type() + esperado: d");
-//	}
-//	else 
-//	  SintaticError("Encontado + curToken.type() + esperado: c");
-//  }
-//  else
-//  	if (curToken.type == 'b') { 
-//		analex();
-//		A('e');
-//		if (curToken.type == 'e') {
-//		  analex();
-//		  if (curToken.type == 'f') {
-//		    analex();
-//		  }
-//		    else
-//		    	SintaticError("Encontado : " + curToken.type() + " esperado: f"); 
-//		}
-//		else
-//			SintaticError("Encontado: " + curToken.type() + " esperado: e");
-//	}
-//	else
-//		SintaticError("Encontado: " + curToken.type() + " esperado: b"); 
-//} 
-//
-//
-//void A(int k) {
-//  try {
-//    if (curToken.type == 'g') { 
-//		analex();
-//		if (curToken.type == 'h') { 
-//			analex();
-//		}
-//		else { 
-//			SintaticError("Encontrado " + curToken.type + " esperado: h");
-//		} 
-// 	}
-// 	else { 
-//  		SintaticError("Encontado " + curToken.type() + "esperado: g");
-//  	}
-//  }
-//  catch (ASException e) { 
-//		System.err.println(e.getMessage());
-//		consume_until(k);
-//	}
-//}

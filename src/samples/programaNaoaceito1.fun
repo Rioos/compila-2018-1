@@ -23,7 +23,7 @@ class Uno extends Carro {
 		int f = 0;
 		for (int i = 0; i <= 10; i = i + 1) {
 			f = i+1 3;
-		// nesse exemplo, o analisador N�O aceitar� que exista um 3 depois de i+1
+		// Nesse exemplo, o analisador NAO deve aceitar que exista um 3 depois de i+1
 		}
 		return false;
 	}

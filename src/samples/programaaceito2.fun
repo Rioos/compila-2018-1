@@ -5,11 +5,11 @@ class Carro extends Carro {
 	char c = 'c';
 	Carro c = new Carro();
 	
-	constructor () {
+	int estacionar(int a = 2, int b = 3) {
 	;
 	}
 	
-	int estacionar(int a = 2, int b = 3) {
+	constructor () {
 	;
 	}
 }

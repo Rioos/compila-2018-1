@@ -378,7 +378,7 @@ void vardecl(RecoverySet g) throws ParseEOFException :
 	(< INT > | < STRING > | < CHAR > | < BOOLEAN > | < FLOAT > | < IDENT >)
 	< IDENT > (< LBRACKET > < RBRACKET >)*
 	(< COMMA > < IDENT > (< LBRACKET > < RBRACKET >)*)*
-	// [< ASSIGN > (alocexpression() | expression() )]
+ 	[< ASSIGN > (alocexpression(g) | expression(g) )]
   }
   catch (ParseException e)
   {

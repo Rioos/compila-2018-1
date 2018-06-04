@@ -3,7 +3,7 @@ class Carro extends Carro {
 	float versao = 12.321;
 	String abc = "abc";
 	
-	constructor void Carro(String s) {
+	constructor (String s) {
 		abc = s;
 	}
 	
@@ -11,8 +11,8 @@ class Carro extends Carro {
 		int a = 123 + 22;
 		int b = 10;
 		return a
-		/*nesse exemplo, o analisador NÃO aceitará que exista um return sem ponto e virgula no final */
 	}
+		/*nesse exemplo, o analisador NÃO aceitará que exista um return sem ponto e virgula no final */
 }
 	
 	

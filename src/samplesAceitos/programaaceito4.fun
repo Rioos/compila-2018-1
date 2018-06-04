@@ -8,11 +8,14 @@ class expressoes {
 		a = 2;
 		b = 3;
 		c = 4;
-		if (a!= b or c%2 and c+b>a xor a+a==a and b>=c)
+		if (a!= b) {
+			a = c + a + 3 +4 -2 +3 + 5 - 20*a;
 			return true;
+		}
 		else {
 			a = a*a;
-			b = b*10;
+			b = b+10;
+			c = a + b + c*3/4;
 			return 13;
 			// nesse exemplo, o analisador sintatico aceita que o metodo retorne true ou 13, pois isso seria um erro semantico
 		}

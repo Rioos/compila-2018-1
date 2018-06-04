@@ -1,5 +1,4 @@
 class int char {
-
 /* nesse exemplo, o analisador NÃO aceitará o nome da classe seja int char */
 	char ident;
 	PaoDeBataaata pb;

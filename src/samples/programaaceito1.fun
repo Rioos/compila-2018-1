@@ -6,7 +6,7 @@ class Uno extends Carro {
 	String modelo;
 	
 
-	int Carro() {
+	void Carro() {
 	;
 	}
 
@@ -20,14 +20,13 @@ class Uno extends Carro {
 	}
 	
 	boolean freiar() {
-		int f = 0;
-		for (int i = 0; i < 10; i = i + 1) {
-			f = i+i;
+		float f;
+		int i;
+		f = 0;
+		for (i = 0; i <= 10; i = i + 1) {
+			f = i+1;
+/*nesse exemplo, o analisador sintatico aceita atribuir um int ao float, pois isso seria um erro semantico*/
 		}
-		return false;
+		return f<1;
 	}
 }
-	// nesse exemplo, o analisador NÃO aceitará que exista uma } a mais
-}
-
-		

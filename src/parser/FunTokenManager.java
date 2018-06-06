@@ -3,6 +3,7 @@
 package parser;
 import java.io.*;
 import recovery.*;
+import syntaticTree.*;
 
 /** Token Manager. */
 @SuppressWarnings("unused")public class FunTokenManager implements FunConstants {

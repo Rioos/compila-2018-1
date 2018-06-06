@@ -1,5 +1,2 @@
-/parser/
-/.gitignore
-/samples/
-/recovery/
 /syntaticTree/
+/parser/

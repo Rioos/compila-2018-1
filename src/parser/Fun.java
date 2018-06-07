@@ -3,7 +3,7 @@
 package parser;
 import java.io.*;
 import recovery.*;
-import syntaticTree.*;
+import syntacticTree.*;
 
 public class Fun implements FunConstants {
   final static String Version ="X++ Compiler - version 1.0 - 2018\u005cn";
@@ -121,7 +121,7 @@ void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFEx
         if ( eof ) throw new ParseEOFException("EOF found prematurely.");
 }
 
-  final public void paramlist(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ListNode paramlist(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("paramlist");
     try {ListNode p = null, q = null;
   int k = 0;
@@ -255,6 +255,7 @@ q = new ListNode(new VarNode(t2, k));
 consumeUntil(g, e, "paramlist");
     {if ("" != null) return null;}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("paramlist");
     }
@@ -369,41 +370,48 @@ consumeUntil(g, e, "vardecl");
     }
   }
 
-  final public void factor() throws ParseException, ParseEOFException {
+  final public ExpreNode factor() throws ParseException, ParseEOFException {
     trace_call("factor");
-    try {
+    try {ExpreNode e = null;
+  Token t;
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case int_constant:{
-        jj_consume_token(int_constant);
+        t = jj_consume_token(int_constant);
+e = new IntConstNode(t);
         break;
         }
       case string_constant:{
-        jj_consume_token(string_constant);
+        t = jj_consume_token(string_constant);
+e = new StringConstNode(t);
         break;
         }
       case char_constant:{
-        jj_consume_token(char_constant);
+        t = jj_consume_token(char_constant);
+e = new CharConstNode(t);
         break;
         }
       case null_constant:{
-        jj_consume_token(null_constant);
+        t = jj_consume_token(null_constant);
+e = new NullConstNode(t);
         break;
         }
       case boolean_constant:{
-        jj_consume_token(boolean_constant);
+        t = jj_consume_token(boolean_constant);
+e = new BooleanConstNode(t);
         break;
         }
       case float_constant:{
-        jj_consume_token(float_constant);
+        t = jj_consume_token(float_constant);
+e = new FloatConstNode(t);
         break;
         }
       case IDENT:{
-        lvalue(null);
+        e = lvalue(null);
         break;
         }
       case LPAREN:{
         jj_consume_token(LPAREN);
-        expression(null);
+        e = expression(null);
         jj_consume_token(RPAREN);
         break;
         }
@@ -412,17 +420,21 @@ consumeUntil(g, e, "vardecl");
         jj_consume_token(-1);
         throw new ParseException();
       }
+{if ("" != null) return e;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("factor");
     }
   }
 
-  final public void unaryexpr() throws ParseException, ParseEOFException {
+  final public ExpreNode unaryexpr() throws ParseException, ParseEOFException {
     trace_call("unaryexpr");
-    try {
+    try {ExpreNode e;
+  Token t1 = null;
+  Token tn = null;
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case NOT:{
-        jj_consume_token(NOT);
+        tn = jj_consume_token(NOT);
         break;
         }
       default:
@@ -434,11 +446,11 @@ consumeUntil(g, e, "vardecl");
       case MINUS:{
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case PLUS:{
-          jj_consume_token(PLUS);
+          t1 = jj_consume_token(PLUS);
           break;
           }
         case MINUS:{
-          jj_consume_token(MINUS);
+          t1 = jj_consume_token(MINUS);
           break;
           }
         default:
@@ -452,16 +464,19 @@ consumeUntil(g, e, "vardecl");
         jj_la1[13] = jj_gen;
         ;
       }
-      factor();
+      e = factor();
+{if ("" != null) return ( (t == null) ? e : new UnaryNode(t, tn, e) );}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("unaryexpr");
     }
   }
 
-  final public void term() throws ParseException, ParseEOFException {
+  final public ExpreNode term() throws ParseException, ParseEOFException {
     trace_call("term");
-    try {
-      unaryexpr();
+    try {ExpreNode e1 = null, e2;
+  Token t;
+      e1 = unaryexpr();
       label_7:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -477,15 +492,15 @@ consumeUntil(g, e, "vardecl");
         }
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case MULTIPLY:{
-          jj_consume_token(MULTIPLY);
+          t = jj_consume_token(MULTIPLY);
           break;
           }
         case DIVIDE:{
-          jj_consume_token(DIVIDE);
+          t = jj_consume_token(DIVIDE);
           break;
           }
         case REM:{
-          jj_consume_token(REM);
+          t = jj_consume_token(REM);
           break;
           }
         default:
@@ -493,17 +508,21 @@ consumeUntil(g, e, "vardecl");
           jj_consume_token(-1);
           throw new ParseException();
         }
-        unaryexpr();
+        e2 = unaryexpr();
+e1 = new MultNode(t, e1, e2);
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("term");
     }
   }
 
-  final public void numexpr() throws ParseException, ParseEOFException {
+  final public ExpreNode numexpr() throws ParseException, ParseEOFException {
     trace_call("numexpr");
-    try {
-      term();
+    try {ExpreNode e1 = null, e2;
+  Token t;
+      e1 = term();
       label_8:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -518,11 +537,11 @@ consumeUntil(g, e, "vardecl");
         }
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case PLUS:{
-          jj_consume_token(PLUS);
+          t = jj_consume_token(PLUS);
           break;
           }
         case MINUS:{
-          jj_consume_token(MINUS);
+          t = jj_consume_token(MINUS);
           break;
           }
         default:
@@ -530,17 +549,21 @@ consumeUntil(g, e, "vardecl");
           jj_consume_token(-1);
           throw new ParseException();
         }
-        term();
+        e2 = term();
+e1 = new AddNode(t, e1, e2);
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("numexpr");
     }
   }
 
-  final public void equalityExpression() throws ParseException {
-    trace_call("equalityExpression");
-    try {
-      numexpr();
+  final public ExpreNode equaltyExpression() throws ParseException {
+    trace_call("equaltyExpression");
+    try {ExpreNode e1 = null, e2;
+  Token t;
+      e1 = numexpr();
       label_9:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -559,27 +582,27 @@ consumeUntil(g, e, "vardecl");
         }
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case LT:{
-          jj_consume_token(LT);
+          t = jj_consume_token(LT);
           break;
           }
         case GT:{
-          jj_consume_token(GT);
+          t = jj_consume_token(GT);
           break;
           }
         case LE:{
-          jj_consume_token(LE);
+          t = jj_consume_token(LE);
           break;
           }
         case GE:{
-          jj_consume_token(GE);
+          t = jj_consume_token(GE);
           break;
           }
         case EQ:{
-          jj_consume_token(EQ);
+          t = jj_consume_token(EQ);
           break;
           }
         case NEQ:{
-          jj_consume_token(NEQ);
+          t = jj_consume_token(NEQ);
           break;
           }
         default:
@@ -587,17 +610,21 @@ consumeUntil(g, e, "vardecl");
           jj_consume_token(-1);
           throw new ParseException();
         }
-        numexpr();
+        e2 = numexpr();
+e1 = new EqualtyNode(t, e1, e2);
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
-      trace_return("equalityExpression");
+      trace_return("equaltyExpression");
     }
   }
 
-  final public void condANDexpression() throws ParseException {
+  final public ExpreNode condANDexpression() throws ParseException {
     trace_call("condANDexpression");
-    try {
-      equalityExpression();
+    try {ExpreNode e1 = null, e2;
+  Token t;
+      e1 = equaltyExpression();
       label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -609,18 +636,22 @@ consumeUntil(g, e, "vardecl");
           jj_la1[20] = jj_gen;
           break label_10;
         }
-        jj_consume_token(AND);
-        equalityExpression();
+        t = jj_consume_token(AND);
+        e2 = equaltyExpression();
+e1 = new AndNode(t, e1, e2);
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("condANDexpression");
     }
   }
 
-  final public void condORexpression() throws ParseException {
+  final public ExpreNode condORexpression() throws ParseException {
     trace_call("condORexpression");
-    try {
-      condANDexpression();
+    try {ExpreNode e1 = null, e2;
+  Token t;
+      e1 = condANDexpression();
       label_11:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -635,11 +666,11 @@ consumeUntil(g, e, "vardecl");
         }
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case OR:{
-          jj_consume_token(OR);
+          t = jj_consume_token(OR);
           break;
           }
         case XOR:{
-          jj_consume_token(XOR);
+          t = jj_consume_token(XOR);
           break;
           }
         default:
@@ -647,18 +678,22 @@ consumeUntil(g, e, "vardecl");
           jj_consume_token(-1);
           throw new ParseException();
         }
-        condANDexpression();
+        e2 = condANDexpression();
+e1 = new AndNode(t, e1, e2);
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("condORexpression");
     }
   }
 
-  final public void expression(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ExpreNode expression(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("expression");
-    try {
+    try {ExpreNode e1 = null, e2 = null;
+  Token t = null;
       try {
-        numexpr();
+        e1 = numexpr();
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case GT:
         case LT:
@@ -668,27 +703,27 @@ consumeUntil(g, e, "vardecl");
         case NEQ:{
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case LT:{
-            jj_consume_token(LT);
+            t = jj_consume_token(LT);
             break;
             }
           case GT:{
-            jj_consume_token(GT);
+            t = jj_consume_token(GT);
             break;
             }
           case LE:{
-            jj_consume_token(LE);
+            t = jj_consume_token(LE);
             break;
             }
           case GE:{
-            jj_consume_token(GE);
+            t = jj_consume_token(GE);
             break;
             }
           case EQ:{
-            jj_consume_token(EQ);
+            t = jj_consume_token(EQ);
             break;
             }
           case NEQ:{
-            jj_consume_token(NEQ);
+            t = jj_consume_token(NEQ);
             break;
             }
           default:
@@ -696,31 +731,40 @@ consumeUntil(g, e, "vardecl");
             jj_consume_token(-1);
             throw new ParseException();
           }
-          numexpr();
+          e2 = numexpr();
+e1 = new RelationalNode(t, e1, e2);
           break;
           }
         default:
           jj_la1[24] = jj_gen;
           ;
         }
+{if ("" != null) return e1;}
       } catch (ParseException e) {
 consumeUntil(g, e, "expression");
+    {if ("" != null) return new RelationalNode(t, e1, e2);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("expression");
     }
   }
 
-  final public void alocexpression(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ExpreNode alocexpression(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("alocexpression");
-    try {RecoverySet f1 = new RecoverySet(RPAREN);
+    try {ExpreNode e1 = null, e2 = null;
+  ListNode l = null;
+  Token t1, t2;
+
+  RecoverySet f1 = new RecoverySet(RPAREN);
   RecoverySet f2 = new RecoverySet(RBRACKET);
-      jj_consume_token(NEW);
+      t1 = jj_consume_token(NEW);
       if (jj_2_1(2)) {
-        jj_consume_token(IDENT);
+        t2 = jj_consume_token(IDENT);
         jj_consume_token(LPAREN);
-        arglist(f1);
+        l = arglist(f1);
         jj_consume_token(RPAREN);
+e1 = new NewObjectNode(t1, t2, l);
       } else {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case INT:
@@ -731,27 +775,27 @@ consumeUntil(g, e, "expression");
         case IDENT:{
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case INT:{
-            jj_consume_token(INT);
+            t2 = jj_consume_token(INT);
             break;
             }
           case STRING:{
-            jj_consume_token(STRING);
+            t2 = jj_consume_token(STRING);
             break;
             }
           case CHAR:{
-            jj_consume_token(CHAR);
+            t2 = jj_consume_token(CHAR);
             break;
             }
           case BOOLEAN:{
-            jj_consume_token(BOOLEAN);
+            t2 = jj_consume_token(BOOLEAN);
             break;
             }
           case FLOAT:{
-            jj_consume_token(FLOAT);
+            t2 = jj_consume_token(FLOAT);
             break;
             }
           case IDENT:{
-            jj_consume_token(IDENT);
+            t2 = jj_consume_token(IDENT);
             break;
             }
           default:
@@ -762,8 +806,12 @@ consumeUntil(g, e, "expression");
           label_12:
           while (true) {
             jj_consume_token(LBRACKET);
-            expression(f2);
+            e2 = expression(f2);
             jj_consume_token(RBRACKET);
+if ( l == null )
+           l = new ListNode(e2);
+        else
+           l.add(e2);
             switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
             case LBRACKET:{
               ;
@@ -774,6 +822,7 @@ consumeUntil(g, e, "expression");
               break label_12;
             }
           }
+e1 = new NewArrayNode(t1, t2, l);
           break;
           }
         default:
@@ -782,16 +831,23 @@ consumeUntil(g, e, "expression");
           throw new ParseException();
         }
       }
+{if ("" != null) return e1;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("alocexpression");
     }
   }
 
-  final public void lvalue(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ExpreNode lvalue(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("lvalue");
-    try {
+    try {ExpreNode e1 = null,
+            e2 = null;
+  Token t1 = null,
+        t2 = null;
+  ListNode l = null;
       try {
-        jj_consume_token(IDENT);
+        t1 = jj_consume_token(IDENT);
+e1 = new VarNode(t1);
         label_13:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -806,18 +862,20 @@ consumeUntil(g, e, "expression");
           }
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case LBRACKET:{
-            jj_consume_token(LBRACKET);
-            expression(null);
+            t1 = jj_consume_token(LBRACKET);
+            e2 = expression(null);
             jj_consume_token(RBRACKET);
+e1 = new IndexNode(t1, e1, e2);
             break;
             }
           case DOT:{
-            jj_consume_token(DOT);
-            jj_consume_token(IDENT);
+            //  	LOOKAHEAD(3) Isto está no livro, não sei se se aplica ao nosso caso
+                t1 = jj_consume_token(DOT);
+            t2 = jj_consume_token(IDENT);
             switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
             case LPAREN:{
               jj_consume_token(LPAREN);
-              arglist(null);
+              l = arglist(null);
               jj_consume_token(RPAREN);
               break;
               }
@@ -825,6 +883,7 @@ consumeUntil(g, e, "expression");
               jj_la1[29] = jj_gen;
               ;
             }
+e1 = new CallNode(t1, e1, e2);
             break;
             }
           default:
@@ -833,23 +892,29 @@ consumeUntil(g, e, "expression");
             throw new ParseException();
           }
         }
+{if ("" != null) return e1;}
       } catch (ParseException e) {
 consumeUntil(g, e, "lvalue");
+    {if ("" != null) return new VarNode(t1);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("lvalue");
     }
   }
 
-  final public void atribstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public AtribNode atribstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("atribstat");
-    try {RecoverySet f1 = new RecoverySet(ASSIGN);
+    try {ExpreNode e1 = null, e2 = null;
+  Token t1 = null;
+
+  RecoverySet f1 = new RecoverySet(ASSIGN);
       try {
-        lvalue(f1);
-        jj_consume_token(ASSIGN);
+        e1 = lvalue(f1);
+        t1 = jj_consume_token(ASSIGN);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case NEW:{
-          alocexpression(g);
+          e2 = alocexpression(g);
           break;
           }
         case PLUS:
@@ -863,7 +928,7 @@ consumeUntil(g, e, "lvalue");
         case boolean_constant:
         case null_constant:
         case IDENT:{
-          expression(g);
+          e2 = expression(g);
           break;
           }
         default:
@@ -871,47 +936,59 @@ consumeUntil(g, e, "lvalue");
           jj_consume_token(-1);
           throw new ParseException();
         }
+{if ("" != null) return new AtribNode(t1, e1, e2);}
       } catch (ParseException e) {
 consumeUntil(g, e, "atribstat");
+        {if ("" != null) return new AtribNode(t1, e1, e2);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("atribstat");
     }
   }
 
-  final public void printstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public PrintNode printstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("printstat");
-    try {
+    try {ExpreNode e1 = null;
+  Token t = null;
       try {
-        jj_consume_token(PRINT);
-        expression(g);
+        t = jj_consume_token(PRINT);
+        e1 = expression(g);
+{if ("" != null) return new PrintNode(t, e1);}
       } catch (ParseException e) {
 consumeUntil(g, e, "printstat");
+        {if ("" != null) return new PrintNode(t, e1);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("printstat");
     }
   }
 
-  final public void readstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ReadNode readstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("readstat");
-    try {
+    try {ExpreNode e1 = null;
+  Token t = null;
       try {
-        jj_consume_token(READ);
-        lvalue(g);
+        t = jj_consume_token(READ);
+        e1 = lvalue(g);
+{if ("" != null) return new ReadNode(t, e1);}
       } catch (ParseException e) {
 consumeUntil(g, e, "readstat");
+    {if ("" != null) return new ReadNode(t, e1);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("readstat");
     }
   }
 
-  final public void returnstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ReturnNode returnstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("returnstat");
-    try {
+    try {ExpreNode e1 = null;
+  Token t = null;
       try {
-        jj_consume_token(RETURN);
+        t = jj_consume_token(RETURN);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case PLUS:
         case MINUS:
@@ -924,93 +1001,111 @@ consumeUntil(g, e, "readstat");
         case boolean_constant:
         case null_constant:
         case IDENT:{
-          expression(g);
+          e1 = expression(g);
           break;
           }
         default:
           jj_la1[32] = jj_gen;
           ;
         }
+{if ("" != null) return new ReturnNode(t, e1);}
       } catch (ParseException e) {
 consumeUntil(g, e, "returnstat");
+    {if ("" != null) return new ReturnNode(t, e1);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("returnstat");
     }
   }
 
-  final public void superstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public SuperNode superstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("superstat");
-    try {RecoverySet f = new RecoverySet(RPAREN);
+    try {ListNode l = null;
+  Token t = null;
+
+  RecoverySet f = new RecoverySet(RPAREN);
       try {
-        jj_consume_token(SUPER);
+        t = jj_consume_token(SUPER);
         jj_consume_token(LPAREN);
-        arglist(f);
+        l = arglist(f);
         jj_consume_token(RPAREN);
+{if ("" != null) return new SuperNode(t, l);}
       } catch (ParseException e) {
 consumeUntil(g, e, "superstat");
+    {if ("" != null) return new SuperNode(t, l);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("superstat");
     }
   }
 
-  final public void statement(RecoverySet g) throws ParseException, ParseEOFException {
+  final public StatementNode statement(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("statement");
-    try {RecoverySet f1 = new RecoverySet(SEMICOLON);
+    try {StatementNode s = null;
+  ListNode l;
+  Token t1 = null;
+
+  RecoverySet f1 = new RecoverySet(SEMICOLON);
   RecoverySet f2 = new RecoverySet(RBRACE);
       try {
         if (jj_2_2(2)) {
-          vardecl(f1);
+          s = vardecl(f1);
           jj_consume_token(SEMICOLON);
         } else {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case IDENT:{
-            atribstat(f1);
+            //	LOOKAHEAD(1) Isso tava no livro, nao sei se se aplica ao nosso caso
+                    s = atribstat(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
           case PRINT:{
-            printstat(f1);
+            s = printstat(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
           case READ:{
-            readstat(f1);
+            s = readstat(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
           case RETURN:{
-            returnstat(f1);
+            s = returnstat(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
           case SUPER:{
-            superstat(f1);
+            s = superstat(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
           case IF:{
-            ifstat(g);
+            s = ifstat(g);
             break;
             }
           case FOR:{
-            forstat(g);
+            s = forstat(g);
             break;
             }
           case LBRACE:{
-            jj_consume_token(LBRACE);
-            statlist(f2);
+            t1 = jj_consume_token(LBRACE);
+            l = statlist(f2);
             jj_consume_token(RBRACE);
+s = new BlockNode(t1, l);
             break;
             }
           case BREAK:{
-            jj_consume_token(BREAK);
+            t1 = jj_consume_token(BREAK);
             jj_consume_token(SEMICOLON);
+s = new BreakNode(t1);
             break;
             }
           case SEMICOLON:{
-            jj_consume_token(SEMICOLON);
+            t1 = jj_consume_token(SEMICOLON);
+s = new NopNode(t1);
+{if ("" != null) return s;}
             break;
             }
           default:
@@ -1021,7 +1116,9 @@ consumeUntil(g, e, "superstat");
         }
       } catch (ParseException e) {
 consumeUntil(g, e, "statement");
+    {if ("" != null) return new NopNode(t1);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("statement");
     }
@@ -1293,40 +1390,54 @@ consumeUntil(g, e, "classdecl");
     }
   }
 
-  final public void ifstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public IfNode ifstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("ifstat");
-    try {RecoverySet f1 = new RecoverySet(RPAREN),
+    try {ExpreNode e1 = null;
+  StatementNode s1 = null,
+                s2 = null;
+  Token t = null;
+
+  RecoverySet f1 = new RecoverySet(RPAREN),
   f2 = new RecoverySet(ELSE).union(g);
       try {
-        jj_consume_token(IF);
+        t = jj_consume_token(IF);
         jj_consume_token(LPAREN);
-        expression(f1);
+        e1 = expression(f1);
         jj_consume_token(RPAREN);
-        statement(f2);
+        s1 = statement(f2);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case ELSE:{
           jj_consume_token(ELSE);
-          statement(g);
+          s2 = statement(g);
           break;
           }
         default:
           jj_la1[41] = jj_gen;
           ;
         }
+{if ("" != null) return new IfNode(t, e1, s1, s2);}
       } catch (ParseException e) {
 consumeUntil(g, e, "ifstat");
+    {if ("" != null) return new IfNode(t, e1, s1, s2);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("ifstat");
     }
   }
 
-  final public void forstat(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ForNode forstat(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("forstat");
-    try {RecoverySet f1 = new RecoverySet(SEMICOLON),
+    try {AtribNode s1 = null,
+            s2 = null;
+  StatementNode s3 = null;
+  ExpreNode e1 = null;
+  Token t = null;
+
+  RecoverySet f1 = new RecoverySet(SEMICOLON),
   f2 = new RecoverySet(RPAREN);
       try {
-        jj_consume_token(FOR);
+        t = jj_consume_token(FOR);
         jj_consume_token(LPAREN);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case INT:
@@ -1337,7 +1448,7 @@ consumeUntil(g, e, "ifstat");
         case IDENT:{
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case IDENT:{
-            atribstat(f1);
+            s1 = atribstat(f1);
             break;
             }
           case INT:
@@ -1345,7 +1456,7 @@ consumeUntil(g, e, "ifstat");
           case FLOAT:
           case CHAR:
           case BOOLEAN:{
-            vardecl(f1);
+            s1 = vardecl(f1);
             break;
             }
           default:
@@ -1372,7 +1483,7 @@ consumeUntil(g, e, "ifstat");
         case boolean_constant:
         case null_constant:
         case IDENT:{
-          expression(f1);
+          e1 = expression(f1);
           break;
           }
         default:
@@ -1382,7 +1493,7 @@ consumeUntil(g, e, "ifstat");
         jj_consume_token(SEMICOLON);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case IDENT:{
-          atribstat(f2);
+          s2 = atribstat(f2);
           break;
           }
         default:
@@ -1390,19 +1501,25 @@ consumeUntil(g, e, "ifstat");
           ;
         }
         jj_consume_token(RPAREN);
-        statement(g);
+        s3 = statement(g);
+{if ("" != null) return new ForNode(t, e1, s1, s2, s3);}
       } catch (ParseException e) {
 consumeUntil(g, e, "forstat");
+    {if ("" != null) return new ForNode(t, e1, s1, s2, s3);}
       }
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("forstat");
     }
   }
 
-  final public void statlist(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ListNode statlist(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("statlist");
-    try {RecoverySet f = First.statlist.union(g);
-      statement(f);
+    try {ListNode l = null;
+StatementNode s = null;
+
+RecoverySet f = First.statlist.remove(IDENT).union(g);
+      s = statement(f);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case BREAK:
       case FOR:
@@ -1419,13 +1536,15 @@ consumeUntil(g, e, "forstat");
       case LBRACE:
       case SEMICOLON:
       case IDENT:{
-        statlist(g);
+        l = statlist(g);
         break;
         }
       default:
         jj_la1[46] = jj_gen;
         ;
       }
+{if ("" != null) return new ListNode(s, l);}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("statlist");
     }
@@ -1447,16 +1566,19 @@ consumeUntil(g, e, "forstat");
         jj_la1[47] = jj_gen;
         ;
       }
-{if ("" != null) return new ListNode(cm, l);}
+{if ("" != null) return new ListNode(c, l);}
     throw new Error("Missing return statement in function");
     } finally {
       trace_return("classlist");
     }
   }
 
-  final public void arglist(RecoverySet g) throws ParseException, ParseEOFException {
+  final public ListNode arglist(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("arglist");
-    try {RecoverySet f = new RecoverySet(COMMA).union(g);
+    try {ListNode l = null;
+  ExpreNode e = null;
+
+  RecoverySet f = new RecoverySet(COMMA).union(g);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case PLUS:
       case MINUS:
@@ -1469,7 +1591,8 @@ consumeUntil(g, e, "forstat");
       case boolean_constant:
       case null_constant:
       case IDENT:{
-        expression(f);
+        e = expression(f);
+l = new ListNode(e);
         label_18:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -1482,7 +1605,8 @@ consumeUntil(g, e, "forstat");
             break label_18;
           }
           jj_consume_token(COMMA);
-          expression(f);
+          e = expression(f);
+l.add(e);
         }
         break;
         }
@@ -1490,6 +1614,8 @@ consumeUntil(g, e, "forstat");
         jj_la1[49] = jj_gen;
         ;
       }
+{if ("" != null) return l;}
+    throw new Error("Missing return statement in function");
     } finally {
       trace_return("arglist");
     }
@@ -1562,6 +1688,13 @@ consumeUntil(g, e, "program");
     finally { jj_save(2, xla); }
   }
 
+  private boolean jj_3_3()
+ {
+    if (jj_3R_19()) return true;
+    if (jj_scan_token(SEMICOLON)) return true;
+    return false;
+  }
+
   private boolean jj_3R_21()
  {
     if (jj_scan_token(COMMA)) return true;
@@ -1572,13 +1705,6 @@ consumeUntil(g, e, "program");
  {
     if (jj_scan_token(IDENT)) return true;
     if (jj_scan_token(LPAREN)) return true;
-    return false;
-  }
-
-  private boolean jj_3_3()
- {
-    if (jj_3R_19()) return true;
-    if (jj_scan_token(SEMICOLON)) return true;
     return false;
   }
 

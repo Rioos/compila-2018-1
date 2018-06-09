@@ -1,7 +1,12 @@
+/syntaticTree/
 /parser/
+<<<<<<< HEAD
 /.gitignore
 /samples/
 /recovery/
 /samplesNaoAceitos/
 /samplesAceitos/
 /symtable/
+=======
+/syntacticTree/
+>>>>>>> f1348afb8c7da30b1348e005323656777d324c59

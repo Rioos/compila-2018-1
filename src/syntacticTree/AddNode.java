@@ -2,7 +2,6 @@ package syntacticTree;
 
 import parser.*;
 
-
 public class AddNode extends ExpreNode {
     public ExpreNode expr1;
     public ExpreNode expr2;

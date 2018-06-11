@@ -58,11 +58,15 @@ public class Fun implements FunConstants {
           }
         }
 
+        ListNode root = null;
+
 
         parser.debug_recovery = debug_recovery;
+
         if (!debug_as) parser.disable_tracing(); // desab verbose do AS
+
         try {
-                parser.program(); //chama o metodo que faz a analise
+                root = parser.program(); //chama o metodo que faz a analise
         }
         catch (ParseEOFException e) {
           System.err.println(e.getMessage());
@@ -72,17 +76,18 @@ public class Fun implements FunConstants {
            System.out.println(parser.contParseError + " Syntatic errors found");
          }
 
-         if ( parser.token_source.foundLexError() // verifica se pode imprimir
+        if ( parser.token_source.foundLexError() // verifica se pode imprimir
          + parser.contParseError == 0 && print_tree) // a arvore sintatica
     {
-//        PrintTree prt = new PrintTree();
-//        prt.printRoot(root);     // chama metodo para imprimir arvore
+       PrintTree prt = new PrintTree();
+       prt.printRoot(root);     // chama metodo para imprimir arvore
     }
 
-        // verifica se houve erro lexico
-        if (parser.token_source.foundLexError() != 0) {
-          System.out.println(parser.token_source.foundLexError() + " lexical errors found");
-        }
+        if ( parser.token_source.foundLexError() + parser.contParseError == 0 )
+    {
+        PrintTree prt = new PrintTree();
+        prt.printRoot(root);
+    }
         else {
           System.out.println("Program successfully analized");
         }
@@ -1058,20 +1063,28 @@ consumeUntil(g, e, "superstat");
   final public StatementNode statement(RecoverySet g) throws ParseException, ParseEOFException {
     trace_call("statement");
     try {StatementNode s = null;
-  ListNode l;
-  Token t1 = null;
+ListNode l;
+Token t1 = null;
 
-  RecoverySet f1 = new RecoverySet(SEMICOLON);
-  RecoverySet f2 = new RecoverySet(RBRACE);
+RecoverySet f1 = new RecoverySet(SEMICOLON).union(g).remove(IDENT);
+RecoverySet f2 = new RecoverySet(RBRACE).union(g).remove(IDENT);
       try {
-        if (jj_2_2(2)) {
+        if (jj_2_2(2147483647)) {
           s = vardecl(f1);
           jj_consume_token(SEMICOLON);
         } else {
           switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
           case IDENT:{
-            //	LOOKAHEAD(1) Isso tava no livro, nao sei se se aplica ao nosso caso
-                    s = atribstat(f1);
+            s = atribstat(f1);
+            jj_consume_token(SEMICOLON);
+            break;
+            }
+          case INT:
+          case STRING:
+          case FLOAT:
+          case CHAR:
+          case BOOLEAN:{
+            s = vardecl(f1);
             jj_consume_token(SEMICOLON);
             break;
             }
@@ -1119,7 +1132,6 @@ s = new BreakNode(t1);
           case SEMICOLON:{
             t1 = jj_consume_token(SEMICOLON);
 s = new NopNode(t1);
-{if ("" != null) return s;}
             break;
             }
           default:
@@ -1128,9 +1140,10 @@ s = new NopNode(t1);
             throw new ParseException();
           }
         }
+{if ("" != null) return s;}
       } catch (ParseException e) {
 consumeUntil(g, e, "statement");
-    {if ("" != null) return new NopNode(t1);}
+   {if ("" != null) return new NopNode(t1);}
       }
     throw new Error("Missing return statement in function");
     } finally {
@@ -1680,9 +1693,9 @@ consumeUntil(g, e, "program");
     finally { jj_save(2, xla); }
   }
 
-  private boolean jj_3R_20()
+  private boolean jj_3R_21()
  {
-    if (jj_scan_token(LBRACKET)) return true;
+    if (jj_scan_token(COMMA)) return true;
     return false;
   }
 
@@ -1721,7 +1734,15 @@ consumeUntil(g, e, "program");
 
   private boolean jj_3_2()
  {
-    if (jj_3R_19()) return true;
+    if (jj_scan_token(IDENT)) return true;
+    if (jj_scan_token(IDENT)) return true;
+    return false;
+  }
+
+  private boolean jj_3_1()
+ {
+    if (jj_scan_token(IDENT)) return true;
+    if (jj_scan_token(LPAREN)) return true;
     return false;
   }
 
@@ -1732,16 +1753,9 @@ consumeUntil(g, e, "program");
     return false;
   }
 
-  private boolean jj_3R_21()
+  private boolean jj_3R_20()
  {
-    if (jj_scan_token(COMMA)) return true;
-    return false;
-  }
-
-  private boolean jj_3_1()
- {
-    if (jj_scan_token(IDENT)) return true;
-    if (jj_scan_token(LPAREN)) return true;
+    if (jj_scan_token(LBRACKET)) return true;
     return false;
   }
 
@@ -1766,7 +1780,7 @@ consumeUntil(g, e, "program");
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x742000,0x0,0x0,0x742000,0x0,0x742000,0x742000,0x0,0x0,0x0,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0xe0000000,0xe0000000,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0xb9840,0x742000,0x0,0x742000,0x80,0x100,0x742000,0x400,0x200,0x0,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x81,0x81,};
+      jj_la1_0 = new int[] {0x742000,0x0,0x0,0x742000,0x0,0x742000,0x742000,0x0,0x0,0x0,0x0,0x0,0x1800000,0x1800000,0xe000000,0xe000000,0x1800000,0x1800000,0xe0000000,0xe0000000,0x0,0x0,0x0,0xe0000000,0xe0000000,0x742000,0x0,0x742000,0x0,0x0,0x0,0x1804000,0x1800000,0x7fb840,0x742000,0x0,0x742000,0x80,0x100,0x742000,0x400,0x200,0x0,0x1800000,0x0,0x7fb840,0x80,0x0,0x1800000,0x81,0x81,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x400000,0x800,0x4000,0x400000,0x800,0x400000,0x400000,0x800,0x4000,0x800,0x7f0080,0x8,0x0,0x0,0x0,0x0,0x0,0x0,0x7,0x7,0x10,0x60,0x60,0x7,0x7,0x400000,0x800,0x400000,0x8800,0x80,0x8800,0x7f0088,0x7f0088,0x402200,0x400000,0x800,0x400000,0x0,0x0,0x400000,0x0,0x0,0x400000,0x7f0088,0x400000,0x402200,0x0,0x4000,0x7f0088,0x0,0x0,};

@@ -25,7 +25,7 @@ class Uno extends Carro {
 		f = 0;
 		for (i = 0; i <= 10; i = i + 1) {
 			f = i+1;
-/*nesse exemplo, o analisador sintatico aceita atribuir um int ao float, pois isso seria um erro semantico*/
+			return true;
 		}
 		return f<1;
 	}

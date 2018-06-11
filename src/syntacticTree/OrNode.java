@@ -3,7 +3,7 @@ package syntacticTree;
 import parser.*;
 
 public class OrNode extends ExpreNode {
-	public ExpreNode expr1;
+  public ExpreNode expr1;
   public ExpreNode expr2;
 
   public OrNode(Token t, ExpreNode e1, ExpreNode e2) {

@@ -65,12 +65,16 @@ public class Fun {
 	    return;
 	  }
 	}
+
+	ListNode root = null;
 	
 
 	parser.debug_recovery = debug_recovery;
+	
 	if (!debug_as) parser.disable_tracing(); // desab verbose do AS
+	
 	try {
-		parser.program(); //chama o metodo que faz a analise
+		root = parser.program(); //chama o metodo que faz a analise
 	}
 	catch (ParseEOFException e) {
 	  System.err.println(e.getMessage());
@@ -80,17 +84,18 @@ public class Fun {
 	   System.out.println(parser.contParseError + " Syntatic errors found");
 	 }
 
-	 if ( parser.token_source.foundLexError() // verifica se pode imprimir
+	if ( parser.token_source.foundLexError() // verifica se pode imprimir
          + parser.contParseError == 0 && print_tree) // a arvore sintatica
     {
-//        PrintTree prt = new PrintTree();
-//        prt.printRoot(root);     // chama metodo para imprimir arvore
+       PrintTree prt = new PrintTree();
+       prt.printRoot(root);     // chama metodo para imprimir arvore
     }
 
-	// verifica se houve erro lexico
-	if (parser.token_source.foundLexError() != 0) {
-	  System.out.println(parser.token_source.foundLexError() + " lexical errors found");
-	}
+	if ( parser.token_source.foundLexError() + parser.contParseError == 0 )
+    {
+        PrintTree prt = new PrintTree();
+        prt.printRoot(root);
+    }
 	else {
 	  System.out.println("Program successfully analized");
 	} 
@@ -711,45 +716,49 @@ SuperNode superstat(RecoverySet g) throws ParseEOFException :
 
 StatementNode statement(RecoverySet g) throws ParseEOFException :
 {
-  StatementNode s = null;
-  ListNode l;
-  Token t1 = null;
+StatementNode s = null;
+ListNode l;
+Token t1 = null;
 
-  RecoverySet f1 = new RecoverySet(SEMICOLON);
-  RecoverySet f2 = new RecoverySet(RBRACE);
+RecoverySet f1 = new RecoverySet(SEMICOLON).union(g).remove(IDENT);
+RecoverySet f2 = new RecoverySet(RBRACE).union(g).remove(IDENT);
 }
 {
-  try {
-	LOOKAHEAD(2)
-	s = vardecl(f1) < SEMICOLON >
+try {
+
+(
+    LOOKAHEAD(<IDENT> <IDENT>)
+    s = vardecl(f1) <SEMICOLON>
 |
-//	LOOKAHEAD(1) Isso tava no livro, nao sei se se aplica ao nosso caso
-	s = atribstat(f1) < SEMICOLON >
+    LOOKAHEAD(1)
+    s = atribstat(f1) <SEMICOLON>
 |
-	s = printstat(f1) < SEMICOLON >
+    s = vardecl(f1) <SEMICOLON>
 |
-	s = readstat(f1) < SEMICOLON >
+    s = printstat(f1) <SEMICOLON>
 |
-	s = returnstat(f1) < SEMICOLON >
+    s = readstat(f1) <SEMICOLON>
 |
-	s = superstat(f1) < SEMICOLON >
+    s = returnstat(f1) <SEMICOLON>
 |
-	s = ifstat(g)
+    s = superstat(f1) <SEMICOLON>
 |
-	s = forstat(g)
+    s = ifstat(g)
 |
-	t1 = < LBRACE > l = statlist(f2) < RBRACE > { s = new BlockNode(t1, l); }
+    s = forstat(g)
 |
-	t1 = < BREAK > < SEMICOLON > { s = new BreakNode(t1);}
+    t1 = <LBRACE> l = statlist(f2) <RBRACE> { s = new BlockNode(t1, l); }
 |
-	t1 = < SEMICOLON > { s = new NopNode(t1); }
-{return s;}
-  }
-  catch (ParseException e)
-  {
-    consumeUntil(g, e, "statement");
-    return new NopNode(t1);
-  }
+    t1 = <BREAK> <SEMICOLON> { s = new BreakNode(t1);}
+|
+    t1 = <SEMICOLON> { s = new NopNode(t1); }
+)  {return s;}
+}
+catch (ParseException e)
+{
+   consumeUntil(g, e, "statement");
+   return new NopNode(t1);
+}
 }
 
 MethodBodyNode methodbody(RecoverySet g) throws ParseEOFException :

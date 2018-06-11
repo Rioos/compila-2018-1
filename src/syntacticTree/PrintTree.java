@@ -104,7 +104,7 @@ public class PrintTree {
         }
 
         x.number = kk++;
-        numberVarDeclNode( x.node);
+        numberVarDeclNode((VarDeclNode) x.node);
         numberVarDeclListNode(x.next);
     }
 

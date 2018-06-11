@@ -11,7 +11,9 @@ PARSER_BEGIN(Fun)
 package parser;
 import java.io.*;
 import recovery.*;
-import syntacticTree.*;		
+import syntacticTree.*;
+import semanalysis.*;   // importa as classes para a analise semantica
+
 
 public class Fun {
   final static String Version ="X++ Compiler - version 1.0 - 2018\n";
@@ -713,6 +715,7 @@ SuperNode superstat(RecoverySet g) throws ParseEOFException :
     return new SuperNode(t, l);
   }
 }
+
 
 StatementNode statement(RecoverySet g) throws ParseEOFException :
 {

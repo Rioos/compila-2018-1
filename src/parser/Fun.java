@@ -4,6 +4,8 @@ package parser;
 import java.io.*;
 import recovery.*;
 import syntacticTree.*;
+//import semanalysis.*;   // importa as classes para a analise semantica
+
 
 public class Fun implements FunConstants {
   final static String Version ="X++ Compiler - version 1.0 - 2018\u005cn";
@@ -1699,6 +1701,12 @@ consumeUntil(g, e, "program");
     return false;
   }
 
+  private boolean jj_3R_21()
+ {
+    if (jj_scan_token(COMMA)) return true;
+    return false;
+  }
+
   private boolean jj_3R_19()
  {
     if (!jj_rescan) trace_call("vardecl(LOOKING AHEAD...)");
@@ -1736,6 +1744,7 @@ consumeUntil(g, e, "program");
  {
     if (jj_scan_token(IDENT)) return true;
     if (jj_scan_token(IDENT)) return true;
+<<<<<<< HEAD
     return false;
   }
 
@@ -1756,6 +1765,22 @@ consumeUntil(g, e, "program");
   private boolean jj_3R_20()
  {
     if (jj_scan_token(LBRACKET)) return true;
+=======
+    return false;
+  }
+
+  private boolean jj_3_1()
+ {
+    if (jj_scan_token(IDENT)) return true;
+    if (jj_scan_token(LPAREN)) return true;
+    return false;
+  }
+
+  private boolean jj_3_3()
+ {
+    if (jj_3R_19()) return true;
+    if (jj_scan_token(SEMICOLON)) return true;
+>>>>>>> e063e312c5141db0fce11c0965bfa70aa5b5840d
     return false;
   }
 
